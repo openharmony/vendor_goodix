@@ -1,0 +1,16 @@
+import("//build/lite/config/subsystem/lite_subsystem.gni")
+import("//build/lite/config/component/lite_component.gni")
+
+static_library ("user_library") {
+    sources = [
+        "user_library.c"
+    ]
+    
+    include_dirs = [
+        "."
+    ]
+    
+    defines = [
+        "CN_MODULENAME=\"UserLibrary\""    
+    ]
+}
