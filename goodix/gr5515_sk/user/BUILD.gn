@@ -1,0 +1,19 @@
+import("//build/lite/config/subsystem/lite_subsystem.gni")
+import("//build/lite/config/component/lite_component.gni")
+
+source_set("user_code") {
+    sources = ["user_main.c"]
+    include_dirs = [
+        "source_set",
+        "static_library"
+    ]
+}
+
+group("user") {
+
+    deps = [
+        ":user_code",
+        "source_set:user_source",
+        "static_library:user_library"
+    ]
+}
