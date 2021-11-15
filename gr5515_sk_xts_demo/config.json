@@ -1,0 +1,79 @@
+{
+    "product_name": "gr5515_sk_xts_demo",
+    "ohos_version": "OpenHarmony 1.0",
+    "device_company": "goodix",
+    "board": "gr551x",
+    "kernel_type": "liteos_m",
+    "kernel_version": "3.0.0",
+    "subsystems": [
+      {
+        "subsystem": "kernel",
+        "components": [
+          { "component": "liteos_m", "features":["enable_ohos_kernel_liteos_m_fs = false","enable_ohos_kernel_liteos_m_cppsupport = false"] }
+        ]
+      },
+      {
+        "subsystem": "iot_hardware",
+        "components": [
+          { "component": "iot_controller", "features":[] }
+        ]
+      },
+      {
+        "subsystem": "hiviewdfx",
+        "components": [
+          { "component": "hilog_lite", "features":[] },
+          { "component": "hievent_lite", "features":[] }
+        ]
+      },
+      {
+        "subsystem": "distributed_schedule",
+        "components": [
+          { "component": "samgr_lite", "features":[] }
+        ]
+      },
+      {
+        "subsystem": "startup",
+        "components": [
+          { "component": "bootstrap_lite", "features":[] },
+          { "component": "syspara_lite", "features":[] }
+        ]
+      },
+      {
+        "subsystem": "utils",
+        "components": [
+          { "component": "file", "features":[] },
+          { "component": "kv_store", "features":[] }
+        ]
+      },
+      {
+        "subsystem": "update",
+        "components": [
+          { "component": "ota_lite", "features":[] }
+        ]
+      },
+      {
+        "subsystem": "test",
+        "components": [
+          { "component": "xts_acts", "features":[] },
+          { "component": "xts_tools", "features":[] }
+         ]
+      },
+      {
+        "subsystem": "security",
+        "components": [
+          { "component": "huks", "features": 
+            [
+              "disable_huks_binary  = true",
+              "disable_authenticate = false",
+              "huks_use_lite_storage = false",
+              "huks_use_hardware_root_key = false",
+              "huks_config_file = \"hks_config_lite.h\""
+            ]
+          }
+        ]
+      }
+    ],
+    "third_party_dir": "",
+    "vendor_adapter_dir": "//device/goodix/gr551x/adapter",
+    "product_adapter_dir": "//vendor/goodix/gr5515_sk_xts_demo/hals"
+  }
