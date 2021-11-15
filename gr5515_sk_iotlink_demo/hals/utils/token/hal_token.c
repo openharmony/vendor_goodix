@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2020 Huawei Device Co., Ltd.
+ * Copyright (c) 2021 GOODIX.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,7 +64,7 @@ int HalReadToken(char *token, unsigned int len)
         return EC_FAILURE;
     }
 
-    return 0;
+    return OEMReadToken(token, len);
 }
 
 int HalWriteToken(const char *token, unsigned int len)
@@ -73,7 +73,7 @@ int HalWriteToken(const char *token, unsigned int len)
         return EC_FAILURE;
     }
 
-    return 0;
+    return OEMWriteToken(token, len);
 }
 
 int HalGetAcKey(char *acKey, unsigned int len)
@@ -82,7 +82,7 @@ int HalGetAcKey(char *acKey, unsigned int len)
         return EC_FAILURE;
     }
 
-    return 0;
+    return OEMGetAcKey(acKey, len);
 }
 
 int HalGetProdId(char *productId, unsigned int len)
@@ -91,7 +91,7 @@ int HalGetProdId(char *productId, unsigned int len)
         return EC_FAILURE;
     }
 
-    return 0;
+    return OEMGetProdId(productId, len);
 }
 
 int HalGetProdKey(char *productKey, unsigned int len)
@@ -100,5 +100,5 @@ int HalGetProdKey(char *productKey, unsigned int len)
         return EC_FAILURE;
     }
 
-    return 0;
+    return OEMGetProdKey(productKey, len);
 }
