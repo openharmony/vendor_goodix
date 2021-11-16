@@ -1,6 +1,6 @@
-From 7ac7daa370f62cb1fbb8c4c5954314ec2b2ce431 Mon Sep 17 00:00:00 2001
+From 10acd1cb30ac0c978dc84e2e2f6710c6f17be809 Mon Sep 17 00:00:00 2001
 From: lidongshan <lidongshan@goodix.com>
-Date: Sat, 13 Nov 2021 14:17:32 +0800
+Date: Tue, 16 Nov 2021 10:59:38 +0800
 Subject: [PATCH] fix-bugs-based-on-master
 
 ---
@@ -29,14 +29,14 @@ index ecba772..2433a17 100755
    ]
  }
 diff --git a/kernel/liteos_m/kal/cmsis/cmsis_liteos2.c b/kernel/liteos_m/kal/cmsis/cmsis_liteos2.c
-index 48ba88d..f64be2f 100644
+index 48ba88d..c672f5c 100644
 --- a/kernel/liteos_m/kal/cmsis/cmsis_liteos2.c
 +++ b/kernel/liteos_m/kal/cmsis/cmsis_liteos2.c
 @@ -1129,6 +1129,7 @@ osStatus_t osMutexDelete(osMutexId_t mutex_id)
  
  osSemaphoreId_t osSemaphoreNew(uint32_t max_count, uint32_t initial_count, const osSemaphoreAttr_t *attr)
  {
-+#if 0
++ #if 0
      UINT32 uwRet = LOS_NOK;
      UINT32 uwSemId;
      UINT32 intSave;
@@ -73,14 +73,14 @@ index 48ba88d..f64be2f 100644
  
  
 diff --git a/kernel/liteos_m/kal/posix/src/pthread.c b/kernel/liteos_m/kal/posix/src/pthread.c
-index e126392..328adb5 100644
+index e126392..eee39b1 100644
 --- a/kernel/liteos_m/kal/posix/src/pthread.c
 +++ b/kernel/liteos_m/kal/posix/src/pthread.c
 @@ -124,6 +124,7 @@ int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
          return ret;
      }
  
-+    ((pthread_attr_t *)attr)->stacksize *= 2;  //todo: add by hilink
++    ((pthread_attr_t *)attr)->stacksize *= 2;
      if (LOS_TaskCreateOnly(&taskID, &taskInitParam) != LOS_OK) {
          free((VOID *)(UINTPTR)taskInitParam.uwArg);
          return EINVAL;
