@@ -16,3 +16,9 @@ group("ohosdemo") {
         "hello_demo:app_hello",
     ]
 }
+
+group("drivers") {
+    deps = [
+        "drivers:drivers_test",
+    ]
+}

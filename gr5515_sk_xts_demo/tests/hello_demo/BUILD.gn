@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("//device/goodix/gr551x/sdk_liteos/config.gni")
+import("//device/board/goodix/${board_name}/liteos_m/config.gni")
 
 static_library("app_hello") {
    configs = []
@@ -21,10 +21,6 @@ static_library("app_hello") {
    ]
 
    cflags = board_cflags
-
    include_dirs = board_include_dirs
-   include_dirs += [
-      "//kernel/liteos_m/kernel/arch/include",
-   ]
 }
 
