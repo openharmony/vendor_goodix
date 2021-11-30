@@ -1,113 +1,313 @@
-From 10acd1cb30ac0c978dc84e2e2f6710c6f17be809 Mon Sep 17 00:00:00 2001
+From 4031899239d7fd6969799a27182718dcc5a6648e Mon Sep 17 00:00:00 2001
 From: lidongshan <lidongshan@goodix.com>
-Date: Tue, 16 Nov 2021 10:59:38 +0800
+Date: Tue, 30 Nov 2021 14:05:38 +0800
 Subject: [PATCH] fix-bugs-based-on-master
 
 ---
- build/lite/config/component/openssl/BUILD.gn  |  2 +-
- kernel/liteos_m/kal/cmsis/cmsis_liteos2.c     | 26 +++++++++++++
- kernel/liteos_m/kal/posix/src/pthread.c       |  1 +
- .../arch/arm/cortex-m4/gcc/los_interrupt.c    |  4 +-
- test/xts/acts/build_lite/BUILD.gn             |  4 +-
- .../hiviewdfx_lite/hilog_hal/src/dfx_hilog.c  |  2 +-
- .../tools/lite/hctest/src/hctest_service.c    |  2 +-
- third_party/mbedtls/library/entropy_poll.c    | 37 +++++--------------
- .../musl/porting/liteos_m/kernel/BUILD.gn     | 14 +++----
- 9 files changed, 50 insertions(+), 42 deletions(-)
+ .../adapter/khdf/liteos_m/platform/BUILD.gn   |   6 +
+ kernel/liteos_m/.config                       | 157 ++++++++++++++++++
+ kernel/liteos_m/.config.old                   |  15 ++
+ kernel/liteos_m/.gitignore                    |   6 +-
+ .../arch/arm/cortex-m4/gcc/los_interrupt.c    |   2 +-
+ kernel/liteos_m/config.h                      |  53 ++++++
+ test/xts/acts/build_lite/BUILD.gn             |   4 +-
+ .../hiviewdfx_lite/hilog_hal/src/dfx_hilog.c  |   2 +-
+ third_party/mbedtls/library/entropy_poll.c    |  39 ++---
+ .../musl/porting/liteos_m/kernel/BUILD.gn     |  26 +--
+ 10 files changed, 256 insertions(+), 54 deletions(-)
+ create mode 100644 kernel/liteos_m/.config
+ create mode 100644 kernel/liteos_m/.config.old
+ create mode 100755 kernel/liteos_m/config.h
 
-diff --git a/build/lite/config/component/openssl/BUILD.gn b/build/lite/config/component/openssl/BUILD.gn
-index ecba772..2433a17 100755
---- a/build/lite/config/component/openssl/BUILD.gn
-+++ b/build/lite/config/component/openssl/BUILD.gn
-@@ -24,7 +24,7 @@ config("openssl_config") {
+diff --git a/drivers/adapter/khdf/liteos_m/platform/BUILD.gn b/drivers/adapter/khdf/liteos_m/platform/BUILD.gn
+index 20fb339..eda2074 100644
+--- a/drivers/adapter/khdf/liteos_m/platform/BUILD.gn
++++ b/drivers/adapter/khdf/liteos_m/platform/BUILD.gn
+@@ -40,6 +40,12 @@ hdf_driver("hdf_platform_lite") {
+     "$HDF_FRAMEWORKS_PATH/support/platform/src/pwm/pwm_core.c",
+     "$HDF_FRAMEWORKS_PATH/support/platform/src/uart/uart_core.c",
+     "$HDF_FRAMEWORKS_PATH/support/platform/src/uart/uart_if.c",
++
++    "$HDF_FRAMEWORKS_PATH/support/platform/src/fwk/platform_common.c",
++    "$HDF_FRAMEWORKS_PATH/support/platform/src/fwk/platform_device.c",
++    "$HDF_FRAMEWORKS_PATH/support/platform/src/fwk/platform_manager.c",
++    "$HDF_FRAMEWORKS_PATH/support/platform/src/fwk/platform_queue.c",
++
+     "plat_common.c",
    ]
- 
-   cflags = [
--    "-fPIC",
-+    #"-fPIC",
-     "-DOPENSSL_ARM_PLATFORM",
-   ]
  }
-diff --git a/kernel/liteos_m/kal/cmsis/cmsis_liteos2.c b/kernel/liteos_m/kal/cmsis/cmsis_liteos2.c
-index 48ba88d..c672f5c 100644
---- a/kernel/liteos_m/kal/cmsis/cmsis_liteos2.c
-+++ b/kernel/liteos_m/kal/cmsis/cmsis_liteos2.c
-@@ -1129,6 +1129,7 @@ osStatus_t osMutexDelete(osMutexId_t mutex_id)
+diff --git a/kernel/liteos_m/.config b/kernel/liteos_m/.config
+new file mode 100644
+index 0000000..8e7fc1d
+--- /dev/null
++++ b/kernel/liteos_m/.config
+@@ -0,0 +1,157 @@
++
++#
++# Compiler
++#
++LOSCFG_COMPILER_GCC=y
++LOSCFG_CROSS_COMPILE="arm-none-eabi-"
++# LOSCFG_COMPILER_CLANG_LLVM is not set
++LOSCFG_COMPILE_DEBUG=y
++# LOSCFG_COMPILE_OPTIMIZE is not set
++LOSCFG_COMPILE_OPTIMIZE_SIZE=y
++# LOSCFG_COMPILE_LTO is not set
++# end of Compiler
++
++#
++# Platform
++#
++LOSCFG_PLATFORM="virt"
++LOSCFG_PRODUCT_NAME="arm_mps2_an386"
++LOSCFG_DEVICE_COMPANY="qemu"
++# LOSCFG_PLATFORM_QEMU_ARM_VIRT_CM7 is not set
++LOSCFG_PLATFORM_QEMU_ARM_VIRT_CM4=y
++# LOSCFG_PLATFORM_QEMU_RISCV32_VIRT is not set
++# LOSCFG_PLATFORM_QEMU_CSKY_SMARTL is not set
++# LOSCFG_PLATFORM_QEMU_XTENSA_ESP32 is not set
++LOSCFG_PRODUCT_QEMU_ARM_MPS2_AN386=y
++LOSCFG_ARCH_ARM=y
++LOSCFG_ARCH_ARM_AARCH32=y
++LOSCFG_ARCH_ARM_V7M=y
++LOSCFG_ARCH_ARM_VER="armv7-m"
++LOSCFG_ARCH_CORTEX_M4=y
++LOSCFG_ARCH_CPU="cortex-m4"
++
++#
++# Extra Configurations
++#
++# LOSCFG_ARCH_FPU_DISABLE is not set
++LOSCFG_IRQ_USE_STANDALONE_STACK=y
++LOSCFG_SOC_COMPANY="goodix"
++LOSCFG_BOARD="gr5515_sk"
++LOSCFG_BOARD_GR5515_SK=y
++LOSCFG_LFS_MAX_BLOCK_COUNT=60
++LOSCFG_SOC="gr551x"
++LOSCFG_SOC_SERIES="gr551x"
++LOSCFG_NUM_IRQS=45
++LOSCFG_SYS_CLOCK_HW_CYCLES_PER_SEC=64000000
++LOSCFG_SOC_SERIES_GR551x=y
++LOSCFG_SOC_COMPANY_GOODIX=y
++LOSCFG_SOC_GR551x=y
++# end of Platform
++
++#
++# Kernel
++#
++LOSCFG_KERNEL_EXTKERNEL=y
++LOSCFG_KERNEL_BACKTRACE=y
++LOSCFG_BACKTRACE_TYPE_1=y
++LOSCFG_BACKTRACE_TYPE=1
++LOSCFG_BACKTRACE_DEPTH=15
++# LOSCFG_KERNEL_CPPSUPPORT is not set
++LOSCFG_BASE_CORE_CPUP=y
++LOSCFG_KERNEL_CPUP=y
++LOSCFG_CPUP_INCLUDE_IRQ=y
++# LOSCFG_DYNLINK is not set
++LOSCFG_KERNEL_PM=y
++LOSCFG_KERNEL_PM_TASK_PTIORITY=1
++LOSCFG_KERNEL_PM_TASK_STACKSIZE=1024
++# LOSCFG_KERNEL_PM_DEBUG is not set
++LOSCFG_DEBUG_HOOK=y
++LOSCFG_PLATFORM_EXC=y
++# LOSCFG_KERNEL_TRACE is not set
++# end of Kernel
++
++#
++# Lib
++#
++LOSCFG_LIB_LIBC=y
++# end of Lib
++
++#
++# Compat
++#
++LOSCFG_COMPAT_POSIX=y
++LOSCFG_COMPAT_CMSIS=y
++# end of Compat
++
++#
++# FileSystem
++#
++# LOSCFG_FS_VFS is not set
++# end of FileSystem
++
++#
++# Net
++#
++# LOSCFG_NET_LWIP is not set
++# end of Net
++
++#
++# Debug
++#
++LOSCFG_GDB=y
++LOSCFG_PLATFORM_ADAPT=y
++LOSCFG_ENABLE_MAGICKEY=y
++LOSCFG_THUMB=y
++# LOSCFG_SAVE_EXCINFO is not set
++LOSCFG_DEBUG_VERSION=y
++# LOSCFG_DEBUG_KERNEL is not set
++# LOSCFG_SHELL is not set
++# LOSCFG_SCHED_DEBUG is not set
++# LOSCFG_USER_INIT_DEBUG is not set
++# LOSCFG_MEM_DEBUG is not set
++# end of Debug
++
++#
++# Driver
++#
++LOSCFG_DRIVERS=y
++LOSCFG_DRIVERS_HDF=y
++LOSCFG_DRIVERS_HDF_PLATFORM=y
++LOSCFG_DRIVERS_HDF_PLATFORM_GPIO=y
++# LOSCFG_DRIVERS_HDF_PLATFORM_I2C is not set
++# LOSCFG_DRIVERS_HDF_PLATFORM_ADC is not set
++# LOSCFG_DRIVERS_HDF_PLATFORM_MMC is not set
++# LOSCFG_DRIVERS_HDF_PLATFORM_EMMC is not set
++# LOSCFG_DRIVERS_HDF_PLATFORM_PWM is not set
++# LOSCFG_DRIVERS_HDF_PLATFORM_RTC is not set
++# LOSCFG_DRIVERS_HDF_PLATFORM_SDIO is not set
++# LOSCFG_DRIVERS_HDF_PLATFORM_DMAC is not set
++# LOSCFG_DRIVERS_HDF_PLATFORM_MIPI_DSI is not set
++# LOSCFG_DRIVERS_HDF_PLATFORM_MIPI_CSI is not set
++# LOSCFG_DRIVERS_HDF_PLATFORM_HISI_SDK is not set
++# LOSCFG_DRIVERS_HDF_PLATFORM_SPI is not set
++# LOSCFG_DRIVERS_HDF_PLATFORM_I2S is not set
++# LOSCFG_DRIVERS_HDF_PLATFORM_HDMI is not set
++# LOSCFG_DRIVERS_HDF_PLATFORM_WATCHDOG is not set
++# end of Driver
++
++#
++# Security
++#
++# LOSCFG_SECURE_TRUSTZONE is not set
++# end of Security
++
++#
++# Test
++#
++# LOSCFG_KERNEL_TEST is not set
++# end of Test
++
++#
++# Stack Smashing Protector (SSP) Compiler Feature
++#
++# LOSCFG_CC_NO_STACKPROTECTOR is not set
++# LOSCFG_CC_STACKPROTECTOR is not set
++LOSCFG_CC_STACKPROTECTOR_STRONG=y
++# LOSCFG_CC_STACKPROTECTOR_ALL is not set
++# end of Stack Smashing Protector (SSP) Compiler Feature
+diff --git a/kernel/liteos_m/.config.old b/kernel/liteos_m/.config.old
+new file mode 100644
+index 0000000..fdcdcbe
+--- /dev/null
++++ b/kernel/liteos_m/.config.old
+@@ -0,0 +1,15 @@
++LOSCFG_COMPILE_DEBUG=y
++# LOSCFG_COMPILE_OPTIMIZE is not set
++# LOSCFG_COMPILE_LTO is not set
++LOSCFG_PLATFORM_QEMU_ARM_VIRT_CM4=y
++LOSCFG_LFS_MAX_BLOCK_COUNT=60
++LOSCFG_KERNEL_BACKTRACE=y
++LOSCFG_KERNEL_CPUP=y
++LOSCFG_PLATFORM_EXC=y
++LOSCFG_COMPAT_CMSIS=y
++# LOSCFG_FS_VFS is not set
++LOSCFG_GDB=y
++LOSCFG_THUMB=y
++LOSCFG_DRIVERS_HDF=y
++LOSCFG_DRIVERS_HDF_PLATFORM=y
++LOSCFG_DRIVERS_HDF_PLATFORM_GPIO=y
+diff --git a/kernel/liteos_m/.gitignore b/kernel/liteos_m/.gitignore
+index 3df7ed2..3840185 100644
+--- a/kernel/liteos_m/.gitignore
++++ b/kernel/liteos_m/.gitignore
+@@ -16,6 +16,6 @@ targets/cortex-m7_nucleo_f767zi_gcc/build
+ *.su
  
- osSemaphoreId_t osSemaphoreNew(uint32_t max_count, uint32_t initial_count, const osSemaphoreAttr_t *attr)
- {
-+ #if 0
-     UINT32 uwRet = LOS_NOK;
-     UINT32 uwSemId;
-     UINT32 intSave;
-@@ -1152,6 +1153,31 @@ osSemaphoreId_t osSemaphoreNew(uint32_t max_count, uint32_t initial_count, const
-     } else {
-         return (osSemaphoreId_t)NULL;
-     }
-+
-+#else
-+
-+    UINT32 uwRet;
-+    UINT32 uwSemId;
-+
-+    UNUSED(attr);
-+
-+    if (OS_INT_ACTIVE) {
-+        return (osSemaphoreId_t)NULL;
-+    }
-+
-+    if (1 == max_count) {
-+        uwRet = LOS_BinarySemCreate((UINT16)initial_count, &uwSemId);
-+    } else {
-+        uwRet = LOS_SemCreate((UINT16)initial_count, &uwSemId);
-+    }
-+
-+    if (uwRet == LOS_OK) {
-+        return (osSemaphoreId_t)(GET_SEM(uwSemId));
-+    } else {
-+        return (osSemaphoreId_t)NULL;
-+    }
-+
-+#endif
+ # Menuconfig temp files
+-/config.h
+-/.config
+-/.config.old
++# /config.h
++# /.config
++# /.config.old
+diff --git a/kernel/liteos_m/arch/arm/cortex-m4/gcc/los_interrupt.c b/kernel/liteos_m/arch/arm/cortex-m4/gcc/los_interrupt.c
+index 8fadd0b..4d76c0b 100644
+--- a/kernel/liteos_m/arch/arm/cortex-m4/gcc/los_interrupt.c
++++ b/kernel/liteos_m/arch/arm/cortex-m4/gcc/los_interrupt.c
+@@ -533,7 +533,7 @@ LITE_OS_SEC_TEXT_INIT VOID HalHwiInit(VOID)
+     *(volatile UINT32 *)OS_NVIC_SHCSR |= (USGFAULT | BUSFAULT | MEMFAULT);
+ 	
+     /* Enable DIV 0 and unaligned exception */
+-    *(volatile UINT32 *)OS_NVIC_CCR |= (DIV0FAULT | UNALIGNFAULT);
++    *(volatile UINT32 *)OS_NVIC_CCR |= (DIV0FAULT);
+ 
+     return;
  }
- 
- 
-diff --git a/kernel/liteos_m/kal/posix/src/pthread.c b/kernel/liteos_m/kal/posix/src/pthread.c
-index e126392..eee39b1 100644
---- a/kernel/liteos_m/kal/posix/src/pthread.c
-+++ b/kernel/liteos_m/kal/posix/src/pthread.c
-@@ -124,6 +124,7 @@ int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
-         return ret;
-     }
- 
-+    ((pthread_attr_t *)attr)->stacksize *= 2;
-     if (LOS_TaskCreateOnly(&taskID, &taskInitParam) != LOS_OK) {
-         free((VOID *)(UINTPTR)taskInitParam.uwArg);
-         return EINVAL;
-diff --git a/kernel/liteos_m/kernel/arch/arm/cortex-m4/gcc/los_interrupt.c b/kernel/liteos_m/kernel/arch/arm/cortex-m4/gcc/los_interrupt.c
-index 6ab3518..b15f986 100644
---- a/kernel/liteos_m/kernel/arch/arm/cortex-m4/gcc/los_interrupt.c
-+++ b/kernel/liteos_m/kernel/arch/arm/cortex-m4/gcc/los_interrupt.c
-@@ -484,7 +484,7 @@ LITE_OS_SEC_TEXT_INIT VOID HalExcHandleEntry(UINT32 excType, UINT32 faultAddr, U
-     OsExcInfoDisplay(&g_excInfo);
-     HalSysExit();
- }
--
-+#if 0
- /* stack protector */
- WEAK UINT32 __stack_chk_guard = 0xd00a0dff;
- 
-@@ -494,7 +494,7 @@ WEAK VOID __stack_chk_fail(VOID)
-     LOS_Panic("stack-protector: Kernel stack is corrupted in: %p\n",
-               __builtin_return_address(0));
- }
--
-+#endif
- /* ****************************************************************************
-  Function    : HalHwiInit
-  Description : initialization of the hardware interrupt
+diff --git a/kernel/liteos_m/config.h b/kernel/liteos_m/config.h
+new file mode 100755
+index 0000000..010ac14
+--- /dev/null
++++ b/kernel/liteos_m/config.h
+@@ -0,0 +1,53 @@
++#define LOSCFG_COMPILER_GCC 1
++#define LOSCFG_CROSS_COMPILE "arm-none-eabi-"
++#define LOSCFG_COMPILE_DEBUG 1
++#define LOSCFG_COMPILE_OPTIMIZE_SIZE 1
++#define LOSCFG_PLATFORM "virt"
++#define LOSCFG_PRODUCT_NAME "arm_mps2_an386"
++#define LOSCFG_DEVICE_COMPANY "qemu"
++#define LOSCFG_PLATFORM_QEMU_ARM_VIRT_CM4 1
++#define LOSCFG_PRODUCT_QEMU_ARM_MPS2_AN386 1
++#define LOSCFG_ARCH_ARM 1
++#define LOSCFG_ARCH_ARM_AARCH32 1
++#define LOSCFG_ARCH_ARM_V7M 1
++#define LOSCFG_ARCH_ARM_VER "armv7-m"
++#define LOSCFG_ARCH_CORTEX_M4 1
++#define LOSCFG_ARCH_CPU "cortex-m4"
++#define LOSCFG_IRQ_USE_STANDALONE_STACK 1
++#define LOSCFG_SOC_COMPANY "goodix"
++#define LOSCFG_BOARD "gr5515_sk"
++#define LOSCFG_BOARD_GR5515_SK 1
++#define LOSCFG_LFS_MAX_BLOCK_COUNT 60
++#define LOSCFG_SOC "gr551x"
++#define LOSCFG_SOC_SERIES "gr551x"
++#define LOSCFG_NUM_IRQS 45
++#define LOSCFG_SYS_CLOCK_HW_CYCLES_PER_SEC 64000000
++#define LOSCFG_SOC_SERIES_GR551x 1
++#define LOSCFG_SOC_COMPANY_GOODIX 1
++#define LOSCFG_SOC_GR551x 1
++#define LOSCFG_KERNEL_EXTKERNEL 1
++#define LOSCFG_KERNEL_BACKTRACE 1
++#define LOSCFG_BACKTRACE_TYPE_1 1
++#define LOSCFG_BACKTRACE_TYPE 1
++#define LOSCFG_BACKTRACE_DEPTH 15
++#define LOSCFG_BASE_CORE_CPUP 1
++#define LOSCFG_KERNEL_CPUP 1
++#define LOSCFG_CPUP_INCLUDE_IRQ 1
++#define LOSCFG_KERNEL_PM 1
++#define LOSCFG_KERNEL_PM_TASK_PTIORITY 1
++#define LOSCFG_KERNEL_PM_TASK_STACKSIZE 1024
++#define LOSCFG_DEBUG_HOOK 1
++#define LOSCFG_PLATFORM_EXC 1
++#define LOSCFG_LIB_LIBC 1
++#define LOSCFG_COMPAT_POSIX 1
++#define LOSCFG_COMPAT_CMSIS 1
++#define LOSCFG_GDB 1
++#define LOSCFG_PLATFORM_ADAPT 1
++#define LOSCFG_ENABLE_MAGICKEY 1
++#define LOSCFG_THUMB 1
++#define LOSCFG_DEBUG_VERSION 1
++#define LOSCFG_DRIVERS 1
++#define LOSCFG_DRIVERS_HDF 1
++#define LOSCFG_DRIVERS_HDF_PLATFORM 1
++#define LOSCFG_DRIVERS_HDF_PLATFORM_GPIO 1
++#define LOSCFG_CC_STACKPROTECTOR_STRONG 1
 diff --git a/test/xts/acts/build_lite/BUILD.gn b/test/xts/acts/build_lite/BUILD.gn
-index 803a06c..e70b746 100644
+index 2a736bb..0566eb1 100644
 --- a/test/xts/acts/build_lite/BUILD.gn
 +++ b/test/xts/acts/build_lite/BUILD.gn
 @@ -32,8 +32,8 @@ lite_component("acts_component") {
@@ -116,8 +316,8 @@ index 803a06c..e70b746 100644
        all_features += [
 -        "//test/xts/acts/communication_lite/lwip_hal:ActsLwipTest",
 -        "//test/xts/acts/communication_lite/wifiservice_hal:ActsWifiServiceTest",
-+        #"//test/xts/acts/communication_lite/lwip_hal:ActsLwipTest",
-+        #"//test/xts/acts/communication_lite/wifiservice_hal:ActsWifiServiceTest",
++        # "//test/xts/acts/communication_lite/lwip_hal:ActsLwipTest",
++        # "//test/xts/acts/communication_lite/wifiservice_hal:ActsWifiServiceTest",
          "//test/xts/acts/utils_lite/file_hal:ActsUtilsFileTest",
          "//test/xts/acts/startup_lite/syspara_hal:ActsParameterTest",
          "//test/xts/acts/iot_hardware_lite/iot_controller_hal:ActsWifiIotTest",
@@ -134,23 +334,19 @@ index d592537..5654c58 100755
      ret = HiLogRegisterModule(HILOG_MODULE_HIVIEW, "HIVIEW");
      TEST_ASSERT_FALSE(ret);
  };
-diff --git a/test/xts/tools/lite/hctest/src/hctest_service.c b/test/xts/tools/lite/hctest/src/hctest_service.c
-index e997fbc..65e89c6 100644
---- a/test/xts/tools/lite/hctest/src/hctest_service.c
-+++ b/test/xts/tools/lite/hctest/src/hctest_service.c
-@@ -87,7 +87,7 @@ static BOOL MessageHandle(Service *service, Request *request)
- 
- static TaskConfig GetTaskConfig(Service *service)
- {
--    TaskConfig config = {LEVEL_MIDDLE, PRI_NORMAL, 0x1000, TASK_QUEUE_SIZE, SINGLE_TASK};
-+    TaskConfig config = {LEVEL_MIDDLE, PRI_NORMAL, 0x4000, TASK_QUEUE_SIZE, SINGLE_TASK};
-     (void)service;
-     return config;
- };
 diff --git a/third_party/mbedtls/library/entropy_poll.c b/third_party/mbedtls/library/entropy_poll.c
-index d7062ea..6758b5e 100755
+index d7062ea..852438a 100755
 --- a/third_party/mbedtls/library/entropy_poll.c
 +++ b/third_party/mbedtls/library/entropy_poll.c
+@@ -14,7 +14,7 @@
+  *  not use this file except in compliance with the License.
+  *  You may obtain a copy of the License at
+  *
+- *  http://www.apache.org/licenses/LICENSE-2.0
++ *  http://www.apache.org/licenses/LICENSE-2
+  *
+  *  Unless required by applicable law or agreed to in writing, software
+  *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 @@ -140,43 +140,24 @@ static int getrandom_wrapper( void *buf, size_t buflen, unsigned int flags )
  #endif /* __linux__ */
  
@@ -205,33 +401,42 @@ index d7062ea..6758b5e 100755
  
      return( 0 );
 diff --git a/third_party/musl/porting/liteos_m/kernel/BUILD.gn b/third_party/musl/porting/liteos_m/kernel/BUILD.gn
-index b0cead9..41656d5 100644
+index f7ba328..cc2d589 100644
 --- a/third_party/musl/porting/liteos_m/kernel/BUILD.gn
 +++ b/third_party/musl/porting/liteos_m/kernel/BUILD.gn
-@@ -60,7 +60,7 @@ static_library(libc) {
+@@ -30,8 +30,6 @@
+ libc = "musl-c"
+ libm = "musl-m"
+ 
+-LITEOS_MENUCONFIG_H = rebase_path("$root_out_dir/config.h")
+-
+ config("include") {
+   include_dirs = [ "include" ]
+ }
+@@ -63,7 +61,7 @@ static_library(libc) {
      "src/misc/dirname.c",
      "src/multibyte/internal.c",
      "src/multibyte/mbtowc.c",
 -    "src/multibyte/wcrtomb.c",
-+    #"src/multibyte/wcrtomb.c",
++    # "src/multibyte/wcrtomb.c",
      "src/multibyte/wctomb.c",
      "src/network/h_errno.c",
      "src/network/htonl.c",
-@@ -102,25 +102,25 @@ static_library(libc) {
+@@ -105,25 +103,25 @@ static_library(libc) {
      "src/stdio/perror.c",
      "src/stdio/remove.c",
      "src/stdio/rewind.c",
 -    "src/stdio/snprintf.c",
-+    #"src/stdio/snprintf.c",
++    # "src/stdio/snprintf.c",
      "src/stdio/stderr.c",
      "src/stdio/stdin.c",
      "src/stdio/stdout.c",
 -    "src/stdio/vfprintf.c",
 -    "src/stdio/vsnprintf.c",
 -    "src/stdio/vsprintf.c",
-+    #"src/stdio/vfprintf.c",
-+    #"src/stdio/vsnprintf.c",
-+    #"src/stdio/vsprintf.c",
++    # "src/stdio/vfprintf.c",
++    # "src/stdio/vsnprintf.c",
++    # "src/stdio/vsprintf.c",
      "src/stdlib/abs.c",
      "src/stdlib/atof.c",
      "src/stdlib/atoi.c",
@@ -239,16 +444,50 @@ index b0cead9..41656d5 100644
      #"src/stdlib/strtol.c",
      "src/locale/iconv.c",
 -    "src/stdio/ungetc.c",
-+    #"src/stdio/ungetc.c",
++    # "src/stdio/ungetc.c",
      "src/stdlib/atol.c",
      "src/stdlib/atoll.c",
      "src/stdlib/bsearch.c",
      "src/stdlib/llabs.c",
 -    "src/stdlib/strtod.c",
-+    #"src/stdlib/strtod.c",
++    # "src/stdlib/strtod.c",
      "src/string/memchr.c",
      "src/string/memcmp.c",
      "src/string/memcpy.c",
+@@ -131,20 +129,17 @@ static_library(libc) {
+     "src/string/memrchr.c",
+     "src/string/memset.c",
+     "src/string/stpcpy.c",
+-    "src/string/stpncpy.c",
+     "src/string/strcasecmp.c",
+     "src/string/strcat.c",
+     "src/string/strchr.c",
+     "src/string/strchrnul.c",
+     "src/string/strcmp.c",
+-    "src/string/strcpy.c",
+     "src/string/strcspn.c",
+     "src/string/strdup.c",
+     "src/string/strlen.c",
+     "src/string/strncasecmp.c",
+-    "src/string/strncat.c",
+     "src/string/strncmp.c",
+-    "src/string/strncpy.c",
++    # "src/string/strncpy.c",
+     "src/string/strnlen.c",
+     "src/string/strrchr.c",
+     "src/string/strspn.c",
+@@ -175,11 +170,6 @@ static_library(libc) {
+     "//kernel/liteos_m/utils",
+   ]
+ 
+-  cflags = [
+-    "-imacros",
+-    "$LITEOS_MENUCONFIG_H",
+-  ]
+-
+   public_configs = [ ":include" ]
+ }
+ 
 -- 
 2.17.1
 

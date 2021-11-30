@@ -11,17 +11,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-static_library("hal_sysparam") {
-  sources = [ "hal_sys_param.c" ]
-  include_dirs = [
-    "//base/startup/syspara_lite/hals",
-  ]
-  defines = [
-      "INCREMENTAL_VERSION=\"${ohos_version}\"",
-      "BUILD_TYPE=\"${ohos_build_type}\"",
-      "BUILD_USER=\"${ohos_build_user}\"",
-      "BUILD_TIME=\"${ohos_build_time}\"",
-      "BUILD_HOST=\"${ohos_build_host}\"",
-      "BUILD_ROOTHASH=\"${ohos_build_roothash}\"",
+import("//drivers/adapter/khdf/liteos_m/hdf.gni")
+
+module_name = "hdf_hcs"
+hdf_driver(module_name) {
+    hcs_sources = [ "hdf.hcs" ]
+    visibility = [
+      "$device_path",
+      ".",
     ]
 }
