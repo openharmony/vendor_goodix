@@ -1,4 +1,4 @@
-From 4031899239d7fd6969799a27182718dcc5a6648e Mon Sep 17 00:00:00 2001
+From dc5bf3281aa28b75eef523fd938121d6388cc973 Mon Sep 17 00:00:00 2001
 From: lidongshan <lidongshan@goodix.com>
 Date: Tue, 30 Nov 2021 14:05:38 +0800
 Subject: [PATCH] fix-bugs-based-on-master
@@ -10,11 +10,12 @@ Subject: [PATCH] fix-bugs-based-on-master
  kernel/liteos_m/.gitignore                    |   6 +-
  .../arch/arm/cortex-m4/gcc/los_interrupt.c    |   2 +-
  kernel/liteos_m/config.h                      |  53 ++++++
+ kernel/liteos_m/kal/BUILD.gn                  |   4 +-
  test/xts/acts/build_lite/BUILD.gn             |   4 +-
  .../hiviewdfx_lite/hilog_hal/src/dfx_hilog.c  |   2 +-
  third_party/mbedtls/library/entropy_poll.c    |  39 ++---
  .../musl/porting/liteos_m/kernel/BUILD.gn     |  26 +--
- 10 files changed, 256 insertions(+), 54 deletions(-)
+ 11 files changed, 258 insertions(+), 56 deletions(-)
  create mode 100644 kernel/liteos_m/.config
  create mode 100644 kernel/liteos_m/.config.old
  create mode 100755 kernel/liteos_m/config.h
@@ -306,6 +307,26 @@ index 0000000..010ac14
 +#define LOSCFG_DRIVERS_HDF_PLATFORM 1
 +#define LOSCFG_DRIVERS_HDF_PLATFORM_GPIO 1
 +#define LOSCFG_CC_STACKPROTECTOR_STRONG 1
+diff --git a/kernel/liteos_m/kal/BUILD.gn b/kernel/liteos_m/kal/BUILD.gn
+index a4153d4..62b8929 100644
+--- a/kernel/liteos_m/kal/BUILD.gn
++++ b/kernel/liteos_m/kal/BUILD.gn
+@@ -32,13 +32,13 @@ import("//kernel/liteos_m/liteos.gni")
+ group("kal") {
+   deps = [ "cmsis" ]
+   deps += [ "posix" ]
+-  deps += [ "libsec" ]
++  # deps += [ "libsec" ]
+ }
+ 
+ config("public") {
+   configs = [
+     "cmsis:public",
+     "posix:public",
+-    "libsec:public",
++    # "libsec:public",
+   ]
+ }
 diff --git a/test/xts/acts/build_lite/BUILD.gn b/test/xts/acts/build_lite/BUILD.gn
 index 2a736bb..0566eb1 100644
 --- a/test/xts/acts/build_lite/BUILD.gn
