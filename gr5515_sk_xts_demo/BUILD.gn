@@ -26,12 +26,10 @@ executable("${fw_img_name}.elf") {
 
     ldflags = [ 
         "-Wl,--whole-archive",
-        "-lhctest",
-        "-lhota",
-        "-lhal_update_static",
+
         # "-ldrivers_test",
         # "-lapp_hello",
-
+        "-lhctest",
         "-lmodule_ActsBootstrapTest",
         "-lmodule_ActsWifiIotTest",
         "-lmodule_ActsParameterTest",
