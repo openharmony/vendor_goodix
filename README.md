@@ -6,7 +6,7 @@
 
 ## 产品样例
 
-支持基于Goodix GR5515 SoC的Starter Kit单板进行开发的XTS测试样例。
+支持基于Goodix GR5515 SoC的Starter Kit单板进行开发的BLE应用、XTS测试样例。
 
 代码路径：
 
@@ -15,6 +15,7 @@ device/                               --- 硬件单板相关仓库
 ├── boards/goodix                     --- Goodix相关单板
 ├── soc/goodix                        --- Goodix相关SoC代码
 vendor/goodix/                        --- vendor_goodix 仓库路径
+├── gr5515_sk_iotlink_demo            --- BLE应用样例
 └── gr5515_sk_xts_demo                --- XTS测试样例
 ```
 
@@ -167,7 +168,7 @@ goodix
 
 继续执行 `hb build -f`, 开始构建工程，待工程构建完毕，生成的固件存放在"**/out/gr5515_sk/gr5515_sk_led_demo/bin/app_led/app_led_fw.bin**", 可使用GProgrammer软件烧录到Flash。
 
-更详细的编译和烧录过程，请参考 [编译烧录教程](https://gitee.com/openharmony-sig/devboard_device_goodix_gr551x/blob/master/README.md)
+更详细的编译和烧录过程，请参考 [编译烧录教程](https://gitee.com/openharmony-sig/device_soc_goodix/blob/master/README.md)
 
 如果用户使用的是GR5515 Starter Kit开发板，固件烧录成功后，程序启动将观察到开发板上LED0间隔1S闪烁。
 
@@ -182,6 +183,6 @@ goodix
 
 ## 相关仓库
 
-[devboard_device_goodix_gr551x](https://gitee.com/openharmony-sig/devboard_device_goodix_gr551x)
+[device_soc_goodix](https://gitee.com/openharmony-sig/device_soc_goodix)
 
 [device_board_goodix](https://gitee.com/openharmony-sig/device_board_goodix)
