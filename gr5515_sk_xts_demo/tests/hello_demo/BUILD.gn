@@ -11,16 +11,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("//device/board/goodix/${board_name}/liteos_m/config.gni")
+import("//build/lite/config/component/lite_component.gni")
 
 static_library("app_hello") {
-   configs = []
-
-   sources = [
-      "src/main.c",
-   ]
-
-   cflags = board_cflags
-   include_dirs = board_include_dirs
+  sources = [ "main.c" ]
 }
-

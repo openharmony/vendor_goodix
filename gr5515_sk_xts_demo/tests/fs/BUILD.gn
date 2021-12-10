@@ -11,14 +11,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-group("ohosdemo") {
-  deps = [ "hello_demo:app_hello" ]
-}
+import("//build/lite/config/component/lite_component.gni")
 
-group("drivers") {
-  deps = [ "drivers:drivers_test" ]
-}
+static_library("fs_test") {
+  sources = [ "fs_test.c" ]
 
-group("fs_test") {
-  deps = [ "fs:fs_test" ]
+  include_dirs = [
+    "//utils/native/lite/include",
+    "//utils/native/lite/memory/include",
+    "//third_party/musl/porting/liteos_m/kernel/include",
+  ]
+
+  deps = [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static" ]
 }

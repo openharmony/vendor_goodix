@@ -11,37 +11,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-drivers_path = "//device/soc/goodix/gr551x/drivers"
-
-import("//device/board/goodix/${board_name}/liteos_m/config.gni")
-import("${drivers_path}/drivers.gni")
+import("//build/lite/config/component/lite_component.gni")
 
 static_library("drivers_test") {
   sources = [
-      "driver_test.c",
-   ]
-
-  if (hdf_drivers_gpio_enable) {
-    sources += [ "gpio_test.c" ]
-  }
-
-  if (hdf_drivers_uart_enable) {
-    sources += [ "uart_test.c" ]
-  }
-
-  cflags = board_cflags
-
-  include_dirs = board_include_dirs
-  include_dirs += [
-    "//kernel/liteos_m/kernel/arch/include",
+    "driver_test.c",
+    "gpio_test.c",
+    "uart_test.c",
   ]
 
-  include_dirs += [
-    "//drivers/peripheral/base",
-    "//kernel/liteos_m/kal/cmsis",
+  include_dirs = [
+    "//drivers/framework/include/platform",
+    "//drivers/framework/include/utils",
+    "//drivers/adapter/khdf/liteos_m/osal/include/",
+    "//drivers/framework/include/osal",
   ]
-  deps = [
-    "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static",
-  ]
+  deps = [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static" ]
 }
-

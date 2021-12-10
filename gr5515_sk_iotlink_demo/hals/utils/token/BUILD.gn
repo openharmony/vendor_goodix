@@ -11,14 +11,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-group("ohosdemo") {
-  deps = [ "hello_demo:app_hello" ]
-}
+static_library("hal_token_static") {
+  sources = [ "hal_token.c" ]
 
-group("drivers") {
-  deps = [ "drivers:drivers_test" ]
-}
-
-group("fs_test") {
-  deps = [ "fs:fs_test" ]
+  include_dirs = [
+    "//base/startup/syspara_lite/hals",
+    "//utils/native/lite/include",
+  ]
+  deps = []
 }

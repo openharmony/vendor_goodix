@@ -19,31 +19,13 @@ fw_img_name = "application"
 
 executable("${fw_img_name}.elf") {
   deps = [
-    "tests:drivers",
-    "tests:fs_test",
-    "tests:ohosdemo",
+    "ble_template:ble_example",
     "//build/lite:ohos",
   ]
 
   ldflags = [
     "-Wl,--whole-archive",
-    "-lfs_test",
-
-    # "-ldrivers_test",
-    # "-lapp_hello",
-    "-lhctest",
-    "-lmodule_ActsBootstrapTest",
-    "-lmodule_ActsWifiIotTest",
-
-    # "-lmodule_ActsUtilsFileTest",
-    # "-lmodule_ActsKvStoreTest",
-    # "-lmodule_ActsParameterTest",
-    # "-lmodule_ActsSamgrTest",
-    # "-lhuks_test_common",
-    # "-lmodule_ActsHuksHalFunctionTest",
-    # "-lmodule_ActsDfxFuncTest",
-    # "-lmodule_ActsUpdaterFuncTest",
-    # "-lmodule_ActsHieventLiteTest",
+    "-lble_example",
     "-Wl,--no-whole-archive",
   ]
 }
@@ -62,5 +44,5 @@ action("image") {
   deps = [ ":${fw_img_name}.elf" ]
 }
 
-group("gr5515_sk_xts_demo") {
+group("gr5515_sk_iotlink_demo") {
 }
