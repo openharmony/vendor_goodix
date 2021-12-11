@@ -27,23 +27,21 @@ executable("${fw_img_name}.elf") {
 
   ldflags = [
     "-Wl,--whole-archive",
-    "-lfs_test",
-
+    # "-lfs_test",
     # "-ldrivers_test",
     # "-lapp_hello",
     "-lhctest",
     "-lmodule_ActsBootstrapTest",
     "-lmodule_ActsWifiIotTest",
-
-    # "-lmodule_ActsUtilsFileTest",
-    # "-lmodule_ActsKvStoreTest",
-    # "-lmodule_ActsParameterTest",
-    # "-lmodule_ActsSamgrTest",
-    # "-lhuks_test_common",
-    # "-lmodule_ActsHuksHalFunctionTest",
-    # "-lmodule_ActsDfxFuncTest",
-    # "-lmodule_ActsUpdaterFuncTest",
-    # "-lmodule_ActsHieventLiteTest",
+    "-lmodule_ActsUtilsFileTest",
+    "-lmodule_ActsKvStoreTest",
+    "-lmodule_ActsParameterTest",
+    "-lmodule_ActsSamgrTest",
+    "-lhuks_test_common",
+    "-lmodule_ActsHuksHalFunctionTest",
+    "-lmodule_ActsDfxFuncTest",
+    "-lmodule_ActsUpdaterFuncTest",
+    "-lmodule_ActsHieventLiteTest",
     "-Wl,--no-whole-archive",
   ]
 }
