@@ -1,28 +1,40 @@
-From 57a09aabff0d0a37abb549f1561eea826135f2cf Mon Sep 17 00:00:00 2001
+From 5d8a20059b30c219f3e5ead14ab5e30bd0b173e0 Mon Sep 17 00:00:00 2001
 From: lidongshan <lidongshan@goodix.com>
-Date: Sat, 11 Dec 2021 23:43:40 +0800
+Date: Sun, 12 Dec 2021 22:50:41 +0800
 Subject: [PATCH] fix-bugs-based-on-master
 
 ---
- kernel/liteos_m/.config                       | 171 ++++++++++++++++++
- kernel/liteos_m/.config.old                   |  14 ++
- kernel/liteos_m/config.h                      |  63 +++++++
- kernel/liteos_m/kal/BUILD.gn                  |   2 +-
+ drivers/adapter/khdf/liteos_m/hdf.gni         |   2 +-
+ kernel/liteos_m/.config                       | 172 ++++++++++++++++++
+ kernel/liteos_m/.config.old                   |  15 ++
+ .../arch/arm/cortex-m4/gcc/los_interrupt.c    |  16 +-
+ kernel/liteos_m/config.h                      |  64 +++++++
  test/xts/acts/build_lite/BUILD.gn             |   4 +-
  .../hiviewdfx_lite/hilog_hal/src/dfx_hilog.c  |   2 +-
  third_party/mbedtls/library/entropy_poll.c    |  39 +---
  .../musl/porting/liteos_m/kernel/BUILD.gn     |  26 +--
- 8 files changed, 270 insertions(+), 51 deletions(-)
+ 9 files changed, 281 insertions(+), 59 deletions(-)
  create mode 100644 kernel/liteos_m/.config
  create mode 100644 kernel/liteos_m/.config.old
  create mode 100755 kernel/liteos_m/config.h
 
+diff --git a/drivers/adapter/khdf/liteos_m/hdf.gni b/drivers/adapter/khdf/liteos_m/hdf.gni
+index b1b631b..a8f0657 100755
+--- a/drivers/adapter/khdf/liteos_m/hdf.gni
++++ b/drivers/adapter/khdf/liteos_m/hdf.gni
+@@ -79,5 +79,5 @@ template("hdf_driver") {
+ 
+ set_defaults("hdf_driver") {
+   configs = [ "$HDFTOPDIR:hdf_config" ]
+-  visibility = [ "$HDFTOPDIR:*" ]
++  # visibility = [ "$HDFTOPDIR:*" ]
+ }
 diff --git a/kernel/liteos_m/.config b/kernel/liteos_m/.config
 new file mode 100644
-index 0000000..2bb8613
+index 0000000..f988b58
 --- /dev/null
 +++ b/kernel/liteos_m/.config
-@@ -0,0 +1,171 @@
+@@ -0,0 +1,172 @@
 +
 +#
 +# Compiler
@@ -72,6 +84,7 @@ index 0000000..2bb8613
 +LOSCFG_SOC_SERIES_GR551x=y
 +LOSCFG_SOC_COMPANY_GOODIX=y
 +LOSCFG_SOC_GR551x=y
++LOSCFG_DRIVERS_HDF_PLATFORM_UART=y
 +# LOSCFG_QUICK_START is not set
 +# end of Platform
 +
@@ -196,10 +209,10 @@ index 0000000..2bb8613
 +# end of Stack Smashing Protector (SSP) Compiler Feature
 diff --git a/kernel/liteos_m/.config.old b/kernel/liteos_m/.config.old
 new file mode 100644
-index 0000000..afd6e6d
+index 0000000..815c4e8
 --- /dev/null
 +++ b/kernel/liteos_m/.config.old
-@@ -0,0 +1,14 @@
+@@ -0,0 +1,15 @@
 +LOSCFG_COMPILE_DEBUG=y
 +# LOSCFG_COMPILE_OPTIMIZE is not set
 +# LOSCFG_COMPILE_LTO is not set
@@ -209,17 +222,45 @@ index 0000000..afd6e6d
 +LOSCFG_KERNEL_CPUP=y
 +LOSCFG_PLATFORM_EXC=y
 +LOSCFG_FS_LITTLEFS=y
++LOSCFG_LFS_MAX_MOUNT_SIZE=1
 +LOSCFG_GDB=y
 +LOSCFG_THUMB=y
 +LOSCFG_DRIVERS_HDF=y
 +LOSCFG_DRIVERS_HDF_PLATFORM=y
 +LOSCFG_DRIVERS_HDF_PLATFORM_GPIO=y
+diff --git a/kernel/liteos_m/arch/arm/cortex-m4/gcc/los_interrupt.c b/kernel/liteos_m/arch/arm/cortex-m4/gcc/los_interrupt.c
+index 986b44b..0c53e41 100755
+--- a/kernel/liteos_m/arch/arm/cortex-m4/gcc/los_interrupt.c
++++ b/kernel/liteos_m/arch/arm/cortex-m4/gcc/los_interrupt.c
+@@ -487,14 +487,14 @@ LITE_OS_SEC_TEXT_INIT VOID HalExcHandleEntry(UINT32 excType, UINT32 faultAddr, U
+ }
+ 
+ /* stack protector */
+-WEAK UINT32 __stack_chk_guard = 0xd00a0dff;
+-
+-WEAK VOID __stack_chk_fail(VOID)
+-{
+-    /* __builtin_return_address is a builtin function, building in gcc */
+-    LOS_Panic("stack-protector: Kernel stack is corrupted in: %p\n",
+-              __builtin_return_address(0));
+-}
++// WEAK UINT32 __stack_chk_guard = 0xd00a0dff;
++
++// WEAK VOID __stack_chk_fail(VOID)
++// {
++//     /* __builtin_return_address is a builtin function, building in gcc */
++//     LOS_Panic("stack-protector: Kernel stack is corrupted in: %p\n",
++//               __builtin_return_address(0));
++// }
+ 
+ /* ****************************************************************************
+  Function    : HalHwiInit
 diff --git a/kernel/liteos_m/config.h b/kernel/liteos_m/config.h
 new file mode 100755
-index 0000000..ba481d6
+index 0000000..6b141a3
 --- /dev/null
 +++ b/kernel/liteos_m/config.h
-@@ -0,0 +1,63 @@
+@@ -0,0 +1,64 @@
 +#define LOSCFG_COMPILER_GCC 1
 +#define LOSCFG_CROSS_COMPILE "arm-none-eabi-"
 +#define LOSCFG_COMPILE_DEBUG 1
@@ -247,6 +288,7 @@ index 0000000..ba481d6
 +#define LOSCFG_SOC_SERIES_GR551x 1
 +#define LOSCFG_SOC_COMPANY_GOODIX 1
 +#define LOSCFG_SOC_GR551x 1
++#define LOSCFG_DRIVERS_HDF_PLATFORM_UART 1
 +#define LOSCFG_KERNEL_EXTKERNEL 1
 +#define LOSCFG_KERNEL_BACKTRACE 1
 +#define LOSCFG_BACKTRACE_TYPE_1 1
@@ -271,7 +313,7 @@ index 0000000..ba481d6
 +#define LOSCFG_POSIX_MQUEUE_API 1
 +#define LOSCFG_FS_VFS 1
 +#define LOSCFG_FS_LITTLEFS 1
-+#define LOSCFG_LFS_MAX_MOUNT_SIZE 3
++#define LOSCFG_LFS_MAX_MOUNT_SIZE 1
 +#define LOSCFG_SUPPORT_LITTLEFS 1
 +#define LOSCFG_GDB 1
 +#define LOSCFG_PLATFORM_ADAPT 1
@@ -283,19 +325,6 @@ index 0000000..ba481d6
 +#define LOSCFG_DRIVERS_HDF_PLATFORM 1
 +#define LOSCFG_DRIVERS_HDF_PLATFORM_GPIO 1
 +#define LOSCFG_CC_STACKPROTECTOR_STRONG 1
-diff --git a/kernel/liteos_m/kal/BUILD.gn b/kernel/liteos_m/kal/BUILD.gn
-index 4e59b8e..5f61e71 100644
---- a/kernel/liteos_m/kal/BUILD.gn
-+++ b/kernel/liteos_m/kal/BUILD.gn
-@@ -34,7 +34,7 @@ module_group(module_name) {
-   modules = [
-     "cmsis",
-     "libc",
--    "libsec",
-+    # "libsec",
-     "posix",
-   ]
- }
 diff --git a/test/xts/acts/build_lite/BUILD.gn b/test/xts/acts/build_lite/BUILD.gn
 index 2a736bb..0566eb1 100644
 --- a/test/xts/acts/build_lite/BUILD.gn
