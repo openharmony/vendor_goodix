@@ -38,20 +38,6 @@
         { "component": "file", "features":[] },
         { "component": "kv_store", "features":[] }
       ]
-    },
-    {
-      "subsystem": "security",
-      "components": [
-        { "component": "huks", "features": 
-          [
-            "disable_huks_binary  = true",
-            "disable_authenticate = true",
-            "huks_use_lite_storage = false",
-            "huks_use_hardware_root_key = false",
-            "huks_config_file = \"hks_config_lite.h\""
-          ]
-        }
-      ]
     }
   ],
   "third_party_dir": "",
