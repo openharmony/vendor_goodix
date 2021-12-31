@@ -18,6 +18,11 @@
 #include "cmsis_os2.h"
 #define LOG_TAG "driver_test"
 #include "log.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define LOG_D(fmt, ...) HILOG_DEBUG(HILOG_MODULE_APP, fmt, ##__VA_ARGS__)
 #define LOG_W(fmt, ...) HILOG_WARN(HILOG_MODULE_APP, fmt, ##__VA_ARGS__)
 #define LOG_I(fmt, ...) HILOG_INFO(HILOG_MODULE_APP, fmt, ##__VA_ARGS__)
@@ -29,10 +34,6 @@
             while (1);                                                                  \
         }                                                                               \
     } while (0)
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 void gpio_test(void);
 void uart_test(void);
