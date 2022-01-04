@@ -22,6 +22,7 @@ executable("${fw_img_name}.elf") {
     "tests:drivers",
     "tests:fs_test",
     "tests:ohosdemo",
+    "tests:shell_test",
     "//build/lite:ohos",
   ]
 
@@ -30,6 +31,7 @@ executable("${fw_img_name}.elf") {
     # "-lfs_test",
     # "-ldrivers_test",
     # "-lapp_hello",
+    "-lshell_test",
     "-lhctest",
     "-lmodule_ActsBootstrapTest",
     "-lmodule_ActsWifiIotTest",

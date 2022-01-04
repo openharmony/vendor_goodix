@@ -11,18 +11,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-group("ohosdemo") {
-  deps = [ "hello_demo:app_hello" ]
-}
+import("//build/lite/config/component/lite_component.gni")
 
-group("drivers") {
-  deps = [ "drivers:drivers_test" ]
-}
-
-group("fs_test") {
-  deps = [ "fs:fs_test" ]
-}
-
-group("shell_test") {
-  deps = [ "shell:shell_test" ]
+static_library("shell_test") {
+  sources = [ "shell_test.c" ]
 }
