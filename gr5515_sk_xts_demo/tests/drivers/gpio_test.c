@@ -72,12 +72,16 @@ static int32_t gpio_irq_handler(uint16_t gpio, void *data)
 
 static void gpio_irq_test(void)
 {
+    static bool enable = false;
     static int val = 1234;
 
-    LOG_I("set key_left (gpio %d) input, @%p\r\n", GPIO_BUTTON_LEFT, gpio_irq_handler);
-    GpioSetDir(GPIO_BUTTON_LEFT, GPIO_DIR_IN);
-    GpioSetIrq(GPIO_BUTTON_LEFT, GPIO_IRQ_TRIGGER_RISING, (GpioIrqFunc)gpio_irq_handler, &val);
-    GpioEnableIrq(GPIO_BUTTON_LEFT);
+    if (enable == false) {
+        enable = true;
+        GpioSetDir(GPIO_BUTTON_LEFT, GPIO_DIR_IN);
+        GpioSetIrq(GPIO_BUTTON_LEFT, GPIO_IRQ_TRIGGER_RISING, (GpioIrqFunc)gpio_irq_handler, &val);
+        GpioEnableIrq(GPIO_BUTTON_LEFT);
+        LOG_I("Set key_left (gpio %d) as interrupt function\r\n", GPIO_BUTTON_LEFT);
+    }
 }
 
 void gpio_test()
