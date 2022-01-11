@@ -183,6 +183,6 @@ goodix
 
 ## 相关仓库
 
-[device_soc_goodix](https://gitee.com/openharmony-sig/device_soc_goodix)
+[device_soc_goodix](https://gitee.com/openharmony/device_soc_goodix)
 
-[device_board_goodix](https://gitee.com/openharmony-sig/device_board_goodix)
+[device_board_goodix](https://gitee.com/openharmony/device_board_goodix)
