@@ -12,17 +12,13 @@
 # limitations under the License.
 
 group("ohosdemo") {
-  deps = [ "hello_demo:app_hello" ]
+    deps = [
+        "hello_demo:app_hello",
+    ]
 }
 
 group("drivers") {
-  deps = [ "drivers:drivers_test" ]
-}
-
-group("fs_test") {
-  deps = [ "fs:fs_test" ]
-}
-
-group("shell_test") {
-  deps = [ "shell:shell_test" ]
+    deps = [
+        "drivers:drivers_test",
+    ]
 }

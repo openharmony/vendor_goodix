@@ -24,10 +24,11 @@ static void uart_test_case(DevHandle uart_handle)
     int32_t ret;
     uint32_t baudrate;
     struct UartAttribute attr;
-    uint8_t send_data[] = "Hello OpenHarmony\r\n";
+    uint8_t send_data[] = "hello OpenHarmony xts";
     uint8_t recv_data[16];
 
-    switch (state) {
+    switch (state)
+    {
         case 0:
             ret = UartSetBaud(uart_handle, 115200);
             if (ret != 0) {
@@ -62,14 +63,17 @@ static void uart_test_case(DevHandle uart_handle)
                 LOG_E("%s, state[%d] failed", __func__, state);
                 return;
             }
-            //state = 4;
+            state = 4;
             break;
         case 4:
             ret = UartRead(uart_handle, recv_data, sizeof(recv_data) - 1);
-            if (ret > 0) {
+            if (ret > 0)
+            {
                 recv_data[ret] = 0;
                 LOG_I("%s, state[%d] recv:%s", __func__, state, recv_data);
-            } else {
+            }
+            else
+            {
                 LOG_I("%s, state[%d] no data received", __func__, state);
             }
             state = 3;
@@ -81,7 +85,8 @@ void uart_test()
 {
     static int uart_state = 0;
 
-    switch (uart_state) {
+    switch (uart_state)
+    {
         default:
         case 0:
             uart_handle = UartOpen(1);
@@ -93,7 +98,8 @@ void uart_test()
             }
             break;
         case 1:
-            if (uart_handle) {
+            if (uart_handle)
+            {
                 uart_test_case(uart_handle);
             }
             break;
