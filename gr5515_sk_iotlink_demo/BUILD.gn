@@ -11,38 +11,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("//build/lite/config/component/lite_component.gni")
 import("//build/lite/config/subsystem/lite_subsystem.gni")
+import("//build/lite/config/component/lite_component.gni")
 
-# Set firmware name
-fw_img_name = "application"
-
-executable("${fw_img_name}.elf") {
-  deps = [
-    "ble_template:ble_example",
-    "//build/lite:ohos",
-  ]
-
-  ldflags = [
-    "-Wl,--whole-archive",
-    "-lble_example",
-    "-Wl,--no-whole-archive",
-  ]
+executable("application.elf") {
+    configs += [ ]
+    deps = [
+        "//build/lite:ohos",
+        "//device/goodix/gr551x:gr551x",
+    ]
 }
 
 action("image") {
-  script = "//device/soc/$device_company/gr551x/tools/bin_create.py"
-  outputs = [
-    "$root_build_dir/bin/${fw_img_name}.bin",
-    "$root_build_dir/bin/${fw_img_name}.lst",
-  ]
-  args = [
-    rebase_path("$root_build_dir/unstripped/bin/${fw_img_name}.elf"),
-    rebase_path(outputs[0]),
-    rebase_path(outputs[1]),
-  ]
-  deps = [ ":${fw_img_name}.elf" ]
+    script = "//device/goodix/gr551x/tools/bin_create.py"
+    outputs = [ "$root_build_dir/bin/application.bin","$root_build_dir/bin/application.lst" ]
+    args = [
+        rebase_path("$root_build_dir/unstripped/bin/application.elf"),
+        rebase_path(outputs[0]),
+        rebase_path(outputs[1]),
+    ]
+    deps = [
+        ":application.elf",
+    ]
 }
 
-group("gr5515_sk_iotlink_demo") {
+group("gr5515_sk_iotlink_demo") {    
 }
