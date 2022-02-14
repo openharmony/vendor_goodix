@@ -32,6 +32,7 @@ static void driver_test_task(void *arg)
 
 static void driver_test(void)
 {
+    HILOG_INFO(HILOG_MODULE_APP, "HILOG_INFO %s\r\n", __func__);
     osThreadAttr_t attr = {0};
     attr.stack_size = 4096;
     attr.priority = osPriorityNormal;
