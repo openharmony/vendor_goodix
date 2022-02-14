@@ -11,56 +11,53 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("//build/lite/config/component/lite_component.gni")
 import("//build/lite/config/subsystem/lite_subsystem.gni")
+import("//build/lite/config/component/lite_component.gni")
 
-# Set firmware name
-fw_img_name = "application"
+executable("application.elf") {
 
-executable("${fw_img_name}.elf") {
-  deps = [
-    "tests:drivers",
-    "tests:fs_test",
-    "tests:ohosdemo",
-    "tests:shell_test",
-    "//build/lite:ohos",
-  ]
+    deps = [
+        "//build/lite:ohos",
+        "//device/goodix/gr551x:gr551x",
+        # "tests:ohosdemo",
+        "tests:drivers",
+    ]
 
-  ldflags = [
-    "-Wl,--whole-archive",
-    # "-lfs_test",
-    # "-ldrivers_test",
-    # "-lapp_hello",
-    "-lshell_test",
-    "-lhctest",
-    "-lmodule_ActsBootstrapTest",
-    "-lmodule_ActsWifiIotTest",
-    "-lmodule_ActsUtilsFileTest",
-    "-lmodule_ActsKvStoreTest",
-    "-lmodule_ActsParameterTest",
-    "-lmodule_ActsSamgrTest",
-    "-lhuks_test_common",
-    "-lmodule_ActsHuksHalFunctionTest",
-    "-lmodule_ActsDfxFuncTest",
-    "-lmodule_ActsUpdaterFuncTest",
-    "-lmodule_ActsHieventLiteTest",
-    "-Wl,--no-whole-archive",
-  ]
+    ldflags = [ 
+        "-Wl,--whole-archive",
+        "-lhctest",
+        "-lhota",
+        "-lhal_update_static",
+        "-ldrivers_test",
+        # "-lapp_hello",
+        # "-lmodule_ActsBootstrapTest",
+        # "-lmodule_ActsWifiIotTest",
+        # "-lmodule_ActsParameterTest",
+        # "-lmodule_ActsSamgrTest",
+        # "-lmodule_ActsUtilsFileTest",
+        # "-lmodule_ActsKvStoreTest",
+        # "-lhuks_test_common",
+        # "-lmodule_ActsHuksHalFunctionTest",
+        # "-lmodule_ActsDfxFuncTest",
+        # "-lmodule_ActsUpdaterFuncTest",
+        # "-lmodule_ActsHieventLiteTest",
+        "-Wl,--no-whole-archive",
+    ]
 }
 
 action("image") {
-  script = "//device/soc/$device_company/gr551x/tools/bin_create.py"
-  outputs = [
-    "$root_build_dir/bin/${fw_img_name}.bin",
-    "$root_build_dir/bin/${fw_img_name}.lst",
-  ]
-  args = [
-    rebase_path("$root_build_dir/unstripped/bin/${fw_img_name}.elf"),
-    rebase_path(outputs[0]),
-    rebase_path(outputs[1]),
-  ]
-  deps = [ ":${fw_img_name}.elf" ]
+    script = "//device/goodix/gr551x/tools/bin_create.py"
+    outputs = [ "$root_build_dir/bin/application.bin","$root_build_dir/bin/application.lst" ]
+    args = [
+        rebase_path("$root_build_dir/unstripped/bin/application.elf"),
+        rebase_path(outputs[0]),
+        rebase_path(outputs[1]),
+    ]
+    deps = [
+        ":application.elf",
+    ]
 }
 
 group("gr5515_sk_xts_demo") {
+
 }

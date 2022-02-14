@@ -14,16 +14,6 @@
  */
 
 #include "hal_sys_param.h"
-#include "stdint.h"
-
-#define HEX_A               0xa
-#define CHAR_NUM_OFFSET     0x30
-#define CHAR_CAPITAL_OFFSET 0x37
-#define SERIAL_LEN          8
-#define UID_LEN             16
-#define UID_SHIFT           4
-#define UID_HIGH_MASK       0xf0
-#define UID_LOW_MASK        0x0f
 
 static const char OHOS_DEVICE_TYPE[] = {"****"};
 static const char OHOS_DISPLAY_VERSION[] = {"OpenHarmony 1.0.1"};
@@ -41,9 +31,6 @@ static const char OHOS_SERIAL[] = {"1234567890"};  // provided by OEM.
 static const int OHOS_FIRST_API_VERSION = 1;
 
 static const char EMPTY_STR[] = {""};
-static char serialNumber[2 * SERIAL_LEN + 1];
-
-extern uint16_t sys_device_uid_get(uint8_t *p_device_uid);
 
 const char* HalGetDeviceType(void)
 {
@@ -90,44 +77,9 @@ const char* HalGetHardwareProfile(void)
     return OHOS_HARDWARE_PROFILE;
 }
 
-static char Hex2Char(uint8_t hex)
-{
-    if (hex < HEX_A) {
-        return hex + CHAR_NUM_OFFSET;
-    } else {
-        return hex + CHAR_CAPITAL_OFFSET;
-    }
-}
-
 const char* HalGetSerial(void)
 {
-    int i;
-    int j = 0;
-    uint8_t UidTmp[SERIAL_LEN];
-    uint8_t Uid[UID_LEN];
-    
-    if (sys_device_uid_get(Uid) == 0) {
-        UidTmp[0] = Uid[3]; 
-        UidTmp[1] = Uid[4]; 
-        UidTmp[2] = Uid[5]; 
-        UidTmp[3] = Uid[6];   
-        UidTmp[4] = Uid[10];  
-        UidTmp[5] = Uid[13];
-        UidTmp[6] = Uid[14];
-        UidTmp[7] = Uid[15];
-    }
-
-    for (i = 0; i < SERIAL_LEN; i++) {
-        uint8_t highFour, lowFour;
-        highFour = (UidTmp[i] & UID_HIGH_MASK) >> UID_SHIFT;
-        serialNumber[j] = Hex2Char(highFour);
-        j++;
-        lowFour = UidTmp[i] & UID_LOW_MASK;
-        serialNumber[j] = Hex2Char(lowFour);
-        j++;
-    }
-
-    return serialNumber;
+    return OHOS_SERIAL;
 }
 
 const char* HalGetBootloaderVersion(void)

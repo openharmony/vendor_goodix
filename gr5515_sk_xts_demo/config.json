@@ -2,14 +2,14 @@
     "product_name": "gr5515_sk_xts_demo",
     "ohos_version": "OpenHarmony 1.0",
     "device_company": "goodix",
-    "board": "gr5515_sk",
+    "board": "gr551x",
     "kernel_type": "liteos_m",
     "kernel_version": "3.0.0",
     "subsystems": [
       {
         "subsystem": "kernel",
         "components": [
-          { "component": "liteos_m" }
+          { "component": "liteos_m", "features":["enable_ohos_kernel_liteos_m_fs = false","enable_ohos_kernel_liteos_m_cppsupport = false"] }
         ]
       },
       {
@@ -26,7 +26,7 @@
         ]
       },
       {
-        "subsystem": "distributedschedule",
+        "subsystem": "distributed_schedule",
         "components": [
           { "component": "samgr_lite", "features":[] }
         ]
@@ -46,19 +46,15 @@
         ]
       },
       {
-        "subsystem": "updater",
+        "subsystem": "update",
         "components": [
           { "component": "ota_lite", "features":[] }
         ]
       },
       {
-        "subsystem": "xts",
+        "subsystem": "test",
         "components": [
-          { "component": "xts_acts", "features":
-            [
-              "config_ohos_xts_acts_utils_lite_kv_store_data_path = \"/data\""
-            ]
-          },
+          { "component": "xts_acts", "features":[] },
           { "component": "xts_tools", "features":[] }
          ]
       },
@@ -78,6 +74,6 @@
       }
     ],
     "third_party_dir": "",
-    "vendor_adapter_dir": "//device/soc/goodix/gr551x/adapter",
+    "vendor_adapter_dir": "//device/goodix/gr551x/adapter",
     "product_adapter_dir": "//vendor/goodix/gr5515_sk_xts_demo/hals"
   }

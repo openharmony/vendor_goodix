@@ -11,8 +11,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("//build/lite/config/component/lite_component.gni")
+import("//device/goodix/gr551x/sdk_liteos/config.gni")
 
 static_library("app_hello") {
-  sources = [ "main.c" ]
+   configs = []
+
+   sources = [
+      "src/main.c",
+   ]
+
+   cflags = board_cflags
+
+   include_dirs = board_include_dirs
+   include_dirs += [
+      "//kernel/liteos_m/kernel/arch/include",
+   ]
 }
+
