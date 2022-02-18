@@ -43,7 +43,6 @@ static const int OHOS_FIRST_API_VERSION = 1;
 static const char EMPTY_STR[] = {""};
 static char serialNumber[2 * SERIAL_LEN + 1];
 
-extern uint16_t sys_device_uid_get(uint8_t *p_device_uid);
 
 const char* HalGetDeviceType(void)
 {
