@@ -20,6 +20,7 @@
 #define HELLO_TASK_STACK_SIZE   4096
 #define HELLO_TASK_PRIO         25
 static int index = 0;
+#define MS_1000                 1000
 
 static void *HelloTask(const char *arg)
 {
@@ -27,7 +28,7 @@ static void *HelloTask(const char *arg)
 
     while (1) {
         printf("hello world! index=%d\r\n", index++);
-        osDelay(1000);
+        osDelay(MS_1000);
     }
 }
 
