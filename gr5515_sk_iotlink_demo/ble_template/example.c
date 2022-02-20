@@ -22,6 +22,7 @@
 
 #define BLE_TASK_STACK_SIZE   4096
 #define BLE_TASK_PRIO         25
+#define MS_1000     1000
 
 extern gap_cb_fun_t         app_gap_callbacks;
 extern gatt_common_cb_fun_t app_gatt_common_callback;
@@ -31,8 +32,7 @@ extern sec_cb_fun_t         app_sec_callback;
 /**@brief Stack global variables for Bluetooth protocol stack. */
 STACK_HEAP_INIT(heaps_table);
 
-static app_callback_t s_app_ble_callback =
-{
+static app_callback_t s_app_ble_callback = {
     .app_ble_init_cmp_callback  = ble_init_cmp_callback,
     .app_gap_callbacks          = &app_gap_callbacks,
     .app_gatt_common_callback   = &app_gatt_common_callback,
@@ -50,7 +50,7 @@ static void *BLE_Task(const char *arg)
     ble_stack_init(&s_app_ble_callback, &heaps_table);
 
     while (1) {
-        osDelay(1000);
+        osDelay(MS_1000);
     }
 }
 

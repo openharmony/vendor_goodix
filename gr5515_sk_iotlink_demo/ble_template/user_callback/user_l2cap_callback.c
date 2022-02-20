@@ -35,8 +35,7 @@ static void app_l2cap_lecb_credit_add_cmp_cb(uint8_t conn_idx, uint8_t status, u
  * GLOBAL VARIABLE DEFINITIONS
  *****************************************************************************************
  */
-const l2cap_lecb_cb_fun_t app_l2cap_callback =
-{
+const l2cap_lecb_cb_fun_t app_l2cap_callback = {
     .app_l2cap_lecb_conn_req_cb        = app_l2cap_lecb_conn_req_cb,
     .app_l2cap_lecb_conn_cb            = app_l2cap_lecb_conn_cb,
     .app_l2cap_lecb_add_credits_ind_cb = app_l2cap_lecb_add_credits_ind_cb,
@@ -60,7 +59,6 @@ const l2cap_lecb_cb_fun_t app_l2cap_callback =
  */
 static void app_l2cap_lecb_conn_req_cb(uint8_t conn_idx, lecb_conn_req_ind_t *p_conn_req)
 {
-
 }
 
 /**
@@ -74,7 +72,6 @@ static void app_l2cap_lecb_conn_req_cb(uint8_t conn_idx, lecb_conn_req_ind_t *p_
  */
 static void app_l2cap_lecb_conn_cb(uint8_t conn_idx, uint8_t status, lecb_conn_ind_t *p_conn_ind)
 {
-
 }
 
 /**
@@ -82,12 +79,12 @@ static void app_l2cap_lecb_conn_cb(uint8_t conn_idx, uint8_t status, lecb_conn_i
  * @brief This callback function will be called when receiving lecb connection addition indication.
  *
  * @param[in] conn_idx:          The connection index.
- * @param[in] p_add_credits_ind: The information of LE credit based connection addition indication. See @ref lecb_add_credits_ind_t.
+ * @param[in] p_add_credits_ind: The information of LE credit based connection addition indication.
+ * See @ref lecb_add_credits_ind_t.
  *****************************************************************************************
  */
 static void app_l2cap_lecb_add_credits_ind_cb(uint8_t conn_idx, lecb_add_credits_ind_t *p_add_credits_ind)
 {
-
 }
 
 /**
@@ -101,7 +98,6 @@ static void app_l2cap_lecb_add_credits_ind_cb(uint8_t conn_idx, lecb_add_credits
  */
 static void app_l2cap_lecb_disconn_cb(uint8_t conn_idx, uint8_t status, lecb_disconn_ind_t *p_disconn_ind)
 {
-
 }
 
 /**
@@ -114,7 +110,6 @@ static void app_l2cap_lecb_disconn_cb(uint8_t conn_idx, uint8_t status, lecb_dis
  */
 static void app_l2cap_lecb_sdu_recv_cb(uint8_t conn_idx, lecb_sdu_t *p_sdu)
 {
-
 }
 
 /**
@@ -128,7 +123,6 @@ static void app_l2cap_lecb_sdu_recv_cb(uint8_t conn_idx, lecb_sdu_t *p_sdu)
  */
 static void app_l2cap_lecb_sdu_send_cb(uint8_t conn_idx, uint8_t status, lecb_sdu_send_evt_t *p_sdu_send_evt)
 {
-
 }
 
 /**
@@ -141,6 +135,5 @@ static void app_l2cap_lecb_sdu_send_cb(uint8_t conn_idx, uint8_t status, lecb_sd
  */
 static void app_l2cap_lecb_credit_add_cmp_cb(uint8_t conn_idx, uint8_t status, uint16_t local_cid)
 {
-
 }
 

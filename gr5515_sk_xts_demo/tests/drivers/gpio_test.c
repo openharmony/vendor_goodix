@@ -22,6 +22,9 @@
 #define GPIO_BUTTON_DOWN  13
 #define GPIO_BUTTON_LEFT  14
 #define GPIO_BUTTON_RIGH  15
+#define GPIO_READ_MAX     10
+#define MS_1000           1000
+#define IS_ODD            2
 
 static void gpio_output_test(void)
 {
@@ -31,7 +34,7 @@ static void gpio_output_test(void)
     GpioSetDir(GPIO_LED1, GPIO_DIR_OUT);
     GpioSetDir(GPIO_LED2, GPIO_DIR_OUT);
 
-    if (cnt++ % 2) {
+    if ((cnt++) % IS_ODD) {        // check cnt is odd number
         LOG_I("set led on\r\n");
         GpioWrite(GPIO_LED1, GPIO_VAL_LOW);
         GpioWrite(GPIO_LED2, GPIO_VAL_HIGH);
@@ -49,14 +52,14 @@ static void gpio_input_test(void)
 
     GpioSetDir(GPIO_BUTTON_UP, GPIO_DIR_IN);
     LOG_I("please push up key: >>> ");
-    while (cnt++ < 10) {
+    while (cnt++ < GPIO_READ_MAX) {
         GpioRead(GPIO_BUTTON_UP, &val);
-        if (0 == val) {
+        if (val == 0) {
             LOG_I("up key\r\n");
             break;
         }
 
-        osDelay(100);
+        osDelay(MS_1000);
     }
 
     if (val) {
@@ -84,7 +87,7 @@ static void gpio_irq_test(void)
     }
 }
 
-void gpio_test()
+void gpio_test(void)
 {
     gpio_output_test();
     gpio_input_test();

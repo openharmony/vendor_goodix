@@ -26,7 +26,8 @@
 static void app_gattc_srvc_disc_cb(uint8_t conn_idx, uint8_t status, const ble_gattc_srvc_disc_t *p_prim_srvc_disc);
 static void app_gattc_inc_srvc_disc_cb(uint8_t conn_idx, uint8_t status, const ble_gattc_incl_disc_t *p_inc_srvc_disc);
 static void app_gattc_char_disc_cb(uint8_t conn_idx, uint8_t status, const ble_gattc_char_disc_t *p_char_disc);
-static void app_gattc_char_desc_disc_cb(uint8_t conn_idx, uint8_t status, const ble_gattc_char_desc_disc_t *p_char_desc_disc);
+static void app_gattc_char_desc_disc_cb(uint8_t conn_idx, uint8_t status, \
+                                        const ble_gattc_char_desc_disc_t *p_char_desc_disc);
 static void app_gattc_read_cb(uint8_t conn_idx, uint8_t status, const ble_gattc_read_rsp_t *p_read_rsp);
 static void app_gattc_write_cb(uint8_t conn_idx, uint8_t status, uint16_t handle);
 static void app_gattc_ntf_ind_cb(uint8_t conn_idx, const ble_gattc_ntf_ind_t *p_ntf_ind);
@@ -36,8 +37,7 @@ static void app_gattc_srvc_browse_cb(uint8_t conn_idx, uint8_t status, const ble
  * GLOBAL VARIABLE DEFINITIONS
  *****************************************************************************************
  */
-const gattc_cb_fun_t app_gattc_callback =
-{
+const gattc_cb_fun_t app_gattc_callback = {
     .app_gattc_srvc_disc_cb      = app_gattc_srvc_disc_cb,
     .app_gattc_inc_srvc_disc_cb  = app_gattc_inc_srvc_disc_cb,
     .app_gattc_char_disc_cb      = app_gattc_char_disc_cb,
@@ -63,7 +63,6 @@ const gattc_cb_fun_t app_gattc_callback =
  */
 static void app_gattc_srvc_disc_cb(uint8_t conn_idx, uint8_t status, const ble_gattc_srvc_disc_t *p_prim_srvc_disc)
 {
-
 }
 
 /**
@@ -77,7 +76,6 @@ static void app_gattc_srvc_disc_cb(uint8_t conn_idx, uint8_t status, const ble_g
  */
 static void app_gattc_inc_srvc_disc_cb(uint8_t conn_idx, uint8_t status, const ble_gattc_incl_disc_t *p_inc_srvc_disc)
 {
-
 }
 
 /**
@@ -91,7 +89,6 @@ static void app_gattc_inc_srvc_disc_cb(uint8_t conn_idx, uint8_t status, const b
  */
 static void app_gattc_char_disc_cb(uint8_t conn_idx, uint8_t status, const ble_gattc_char_disc_t *p_char_disc)
 {
-
 }
 
 /**
@@ -103,9 +100,9 @@ static void app_gattc_char_disc_cb(uint8_t conn_idx, uint8_t status, const ble_g
  * @param[in] p_char_desc_disc: The information of characteristic(s). See @ref ble_gattc_char_desc_disc_t.
  *****************************************************************************************
  */
-static void app_gattc_char_desc_disc_cb(uint8_t conn_idx, uint8_t status, const ble_gattc_char_desc_disc_t *p_char_desc_disc)
+static void app_gattc_char_desc_disc_cb(uint8_t conn_idx, uint8_t status, \
+                                        const ble_gattc_char_desc_disc_t *p_char_desc_disc)
 {
-
 }
 
 /**
@@ -119,7 +116,6 @@ static void app_gattc_char_desc_disc_cb(uint8_t conn_idx, uint8_t status, const 
  */
 static void app_gattc_write_cb(uint8_t conn_idx, uint8_t status, uint16_t handle)
 {
-
 }
 
 /**
@@ -133,7 +129,6 @@ static void app_gattc_write_cb(uint8_t conn_idx, uint8_t status, uint16_t handle
  */
 static void app_gattc_read_cb(uint8_t conn_idx, uint8_t status, const ble_gattc_read_rsp_t *p_read_rsp)
 {
-
 }
 
 /**
@@ -147,8 +142,7 @@ static void app_gattc_read_cb(uint8_t conn_idx, uint8_t status, const ble_gattc_
  */
 static void app_gattc_ntf_ind_cb(uint8_t conn_idx, const ble_gattc_ntf_ind_t *p_ntf_ind)
 {
-    if (BLE_GATT_INDICATION == p_ntf_ind->type)
-    {
+    if (BLE_GATT_INDICATION == p_ntf_ind->type) {
         ble_gattc_indicate_cfm(conn_idx, p_ntf_ind->handle);
     }
 }
@@ -164,5 +158,4 @@ static void app_gattc_ntf_ind_cb(uint8_t conn_idx, const ble_gattc_ntf_ind_t *p_
  */
 static void app_gattc_srvc_browse_cb(uint8_t conn_idx, uint8_t status, const ble_gattc_browse_srvc_t *p_browse_srvc)
 {
-
 }
