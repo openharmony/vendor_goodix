@@ -36,7 +36,7 @@ static void app_gap_adv_data_update_cb(uint8_t inst_idx, uint8_t status);
 static void app_gap_scan_start_cb(uint8_t status);
 static void app_gap_scan_stop_cb(uint8_t status, gap_stopped_reason_t reason);
 static void app_gap_adv_report_ind_cb(const gap_ext_adv_report_ind_t  *p_adv_report);
-static void app_gap_sync_establish_cb(uint8_t inst_idx, uint8_t status, 
+static void app_gap_sync_establish_cb(uint8_t inst_idx, uint8_t status, \
                                       const gap_sync_established_ind_t *p_sync_established_info);
 static void app_gap_stop_sync_cb(uint8_t inst_idx, uint8_t status);
 static void app_gap_sync_lost_cb(uint8_t inst_idx);
@@ -57,8 +57,7 @@ static void app_gap_le_pkt_size_info_cb(uint8_t conn_idx,  uint8_t status,
  * GLOBAL VARIABLE DEFINITIONS
  *****************************************************************************************
  */
-const gap_cb_fun_t app_gap_callbacks =
-{
+const gap_cb_fun_t app_gap_callbacks = {
     // -------------------------  Common Callbacks       ---------------------------------
     .app_gap_param_set_cb               = app_gap_param_set_cb,
     .app_gap_psm_manager_cb             = app_gap_psm_manager_cb,
@@ -109,7 +108,6 @@ const gap_cb_fun_t app_gap_callbacks =
  */
 static void app_gap_param_set_cb(uint8_t status, const gap_param_set_op_id_t set_param_op)
 {
-
 }
 
 /**
@@ -122,7 +120,6 @@ static void app_gap_param_set_cb(uint8_t status, const gap_param_set_op_id_t set
  */
 static void app_gap_psm_manager_cb(uint8_t status, const gap_psm_manager_op_id_t psm_op)
 {
-
 }
 
 /**
@@ -136,7 +133,6 @@ static void app_gap_psm_manager_cb(uint8_t status, const gap_psm_manager_op_id_t
  */
 static void app_gap_phy_update_cb(uint8_t conn_idx, uint8_t status, const gap_le_phy_ind_t *p_phy_ind)
 {
-
 }
 
 /**
@@ -149,7 +145,6 @@ static void app_gap_phy_update_cb(uint8_t conn_idx, uint8_t status, const gap_le
  */
 static void app_gap_dev_info_get_cb(uint8_t status, const gap_dev_info_get_t *p_dev_info)
 {
-
 }
 
 /**
@@ -162,8 +157,7 @@ static void app_gap_dev_info_get_cb(uint8_t status, const gap_dev_info_get_t *p_
  */
 static void app_gap_adv_start_cb(uint8_t inst_idx, uint8_t status)
 {
-    if (BLE_SUCCESS != status)
-    {
+    if (BLE_SUCCESS != status) {
         APP_LOG_DEBUG("Adverting started failed(0X%02X).", status);
     }
 }
@@ -179,8 +173,7 @@ static void app_gap_adv_start_cb(uint8_t inst_idx, uint8_t status)
  */
 static void app_gap_adv_stop_cb(uint8_t inst_idx, uint8_t status, gap_stopped_reason_t reason)
 {
-    if (GAP_STOPPED_REASON_TIMEOUT == reason && BLE_SUCCESS == status)
-    {
+    if (GAP_STOPPED_REASON_TIMEOUT == reason && BLE_SUCCESS == status) {
         APP_LOG_DEBUG("Advertising timeout.");
     }
 }
@@ -195,7 +188,6 @@ static void app_gap_adv_stop_cb(uint8_t inst_idx, uint8_t status, gap_stopped_re
  */
 static void app_gap_scan_req_ind_cb(uint8_t inst_idx, const gap_bdaddr_t *p_scanner_addr)
 {
-
 }
 
 /**
@@ -208,7 +200,6 @@ static void app_gap_scan_req_ind_cb(uint8_t inst_idx, const gap_bdaddr_t *p_scan
  */
 static void app_gap_adv_data_update_cb(uint8_t inst_idx, uint8_t status)
 {
-
 }
 
 /**
@@ -220,12 +211,11 @@ static void app_gap_adv_data_update_cb(uint8_t inst_idx, uint8_t status)
  */
 static void app_gap_scan_start_cb(uint8_t status)
 {
-
 }
 
 /**
  ****************************************************************************************
- * @brief This callback function will be called once the scanning activity has been stopped.
+ * @brief This callback function will be called when scanning stops.
  *
  * @param[in] status: The status of stopping a scanner.
  * @param[in] reason: The stop reason. See @ref gap_stopped_reason_t.
@@ -233,7 +223,6 @@ static void app_gap_scan_start_cb(uint8_t status)
  */
 static void app_gap_scan_stop_cb(uint8_t status, gap_stopped_reason_t reason)
 {
-
 }
 
 /**
@@ -245,7 +234,6 @@ static void app_gap_scan_stop_cb(uint8_t status, gap_stopped_reason_t reason)
  */
 static void app_gap_adv_report_ind_cb(const gap_ext_adv_report_ind_t  *p_adv_report)
 {
-
 }
 
 /**
@@ -256,9 +244,9 @@ static void app_gap_adv_report_ind_cb(const gap_ext_adv_report_ind_t  *p_adv_rep
  * @param[in] p_sync_established_info: The established ind info.  See @ref gap_sync_established_ind_t.
  ****************************************************************************************
  */
-static void app_gap_sync_establish_cb(uint8_t inst_idx, uint8_t status, const gap_sync_established_ind_t *p_sync_established_info)
+static void app_gap_sync_establish_cb(uint8_t inst_idx, uint8_t status,  \
+                                      const gap_sync_established_ind_t *p_sync_established_info)
 {
-
 }
 
 /**
@@ -270,7 +258,6 @@ static void app_gap_sync_establish_cb(uint8_t inst_idx, uint8_t status, const ga
  */
 static void app_gap_stop_sync_cb(uint8_t inst_idx, uint8_t status)
 {
-
 }
 
 /**
@@ -280,7 +267,6 @@ static void app_gap_stop_sync_cb(uint8_t inst_idx, uint8_t status)
  */
 static void app_gap_sync_lost_cb(uint8_t inst_idx)
 {
-
 }
 
 /**
@@ -294,8 +280,7 @@ static void app_gap_sync_lost_cb(uint8_t inst_idx)
  */
 static void app_gap_connect_cb(uint8_t conn_idx, uint8_t status, const gap_conn_cmp_t *p_conn_param)
 {
-    if (BLE_SUCCESS == status)
-    {
+    if (BLE_SUCCESS == status) {
         APP_LOG_INFO("Connected with the peer %02X:%02X:%02X:%02X:%02X:%02X.",
                      p_conn_param->peer_addr.addr[5],
                      p_conn_param->peer_addr.addr[4],
@@ -318,8 +303,7 @@ static void app_gap_connect_cb(uint8_t conn_idx, uint8_t status, const gap_conn_
  */
 static void app_gap_disconnect_cb(uint8_t conn_idx, uint8_t status, uint8_t reason)
 {
-    if (BLE_SUCCESS == status)
-    {
+    if (BLE_SUCCESS == status) {
         APP_LOG_INFO("Disconnected (0x%02X).", reason);
         app_disconnected_handler(conn_idx, reason);
     }
@@ -334,7 +318,6 @@ static void app_gap_disconnect_cb(uint8_t conn_idx, uint8_t status, uint8_t reas
 */
 static void app_gap_connect_cancel_cb(uint8_t status)
 {
-
 }
 
 /**
@@ -344,7 +327,6 @@ static void app_gap_connect_cancel_cb(uint8_t status)
  */
 static void app_gap_auto_connection_timeout_cb(void)
 {
-
 }
 
 /**
@@ -357,7 +339,6 @@ static void app_gap_auto_connection_timeout_cb(void)
  */
 static void app_gap_peer_name_ind_cb(uint8_t conn_idx, const gap_peer_name_ind_t  *p_peer_name)
 {
-
 }
 
 /**
@@ -369,9 +350,9 @@ static void app_gap_peer_name_ind_cb(uint8_t conn_idx, const gap_peer_name_ind_t
  * @param[in] p_conn_param_update_info: The connection update complete param. See @ref gap_conn_update_cmp_t.
  ****************************************************************************************
  */
-static void app_gap_connection_update_cb(uint8_t conn_idx, uint8_t status, const gap_conn_update_cmp_t *p_conn_param_update_info)
+static void app_gap_connection_update_cb(uint8_t conn_idx, uint8_t status, \
+                                         const gap_conn_update_cmp_t *p_conn_param_update_info)
 {
-
 }
 
 /**
@@ -398,7 +379,6 @@ static void app_gap_connection_update_req_cb(uint8_t conn_idx, const gap_conn_pa
  */
 static void app_gap_connection_info_get_cb(uint8_t conn_idx, uint8_t status, const gap_conn_info_param_t *p_conn_info)
 {
-
 }
 
 /**
@@ -412,7 +392,6 @@ static void app_gap_connection_info_get_cb(uint8_t conn_idx, uint8_t status, con
  */
 static void app_gap_peer_info_get_cb(uint8_t conn_idx,  uint8_t status, const gap_peer_info_param_t *p_peer_dev_info)
 {
-
 }
 
 /**
@@ -424,7 +403,7 @@ static void app_gap_peer_info_get_cb(uint8_t conn_idx,  uint8_t status, const ga
  * @param[in]  p_supported_data_length_size: Supported data length size. See @ref gap_le_pkt_size_ind_t.
  ****************************************************************************************
  */
-static void app_gap_le_pkt_size_info_cb(uint8_t conn_idx,  uint8_t status, const gap_le_pkt_size_ind_t *p_supported_data_length)
+static void app_gap_le_pkt_size_info_cb(uint8_t conn_idx,  uint8_t status, \
+                                        const gap_le_pkt_size_ind_t *p_supported_data_length)
 {
-
 }

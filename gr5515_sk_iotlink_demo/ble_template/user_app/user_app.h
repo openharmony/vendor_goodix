@@ -31,14 +31,14 @@ void ble_init_cmp_callback(void);
 
 /**
  *****************************************************************************************
- *@brief Function for deal device connect.
+ * @brief Function for deal device connect.
  *****************************************************************************************
  */
 void app_connected_handler(uint8_t conn_idx, const gap_conn_cmp_t *p_param);
 
 /**
  *****************************************************************************************
- *@brief Function for deal disconnect.
+ * @brief Function for deal disconnect.
  *****************************************************************************************
  */
 void app_disconnected_handler(uint8_t conn_idx, uint8_t reason);

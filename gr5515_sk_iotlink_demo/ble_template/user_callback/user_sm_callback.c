@@ -31,8 +31,7 @@ static void app_sec_rcv_keypress_nofify_cb(uint8_t conn_idx, sec_keypress_notify
  * GLOBAL VARIABLE DEFINITIONS
  *****************************************************************************************
  */
-const sec_cb_fun_t app_sec_callback =
-{
+const sec_cb_fun_t app_sec_callback = {
     .app_sec_enc_req_cb         = app_sec_rcv_enc_req_cb,
     .app_sec_enc_ind_cb         = app_sec_rcv_enc_ind_cb,
     .app_sec_keypress_notify_cb = app_sec_rcv_keypress_nofify_cb
@@ -52,7 +51,6 @@ const sec_cb_fun_t app_sec_callback =
  */
 static void app_sec_rcv_enc_req_cb(uint8_t conn_idx, sec_enc_req_t *p_enc_req)
 {
-
 }
 
 /**
@@ -67,7 +65,6 @@ static void app_sec_rcv_enc_req_cb(uint8_t conn_idx, sec_enc_req_t *p_enc_req)
  */
 static void app_sec_rcv_enc_ind_cb(uint8_t conn_idx, sec_enc_ind_t enc_ind, uint8_t auth)
 {
-
 }
 
 /**
@@ -80,5 +77,4 @@ static void app_sec_rcv_enc_ind_cb(uint8_t conn_idx, sec_enc_ind_t enc_ind, uint
  */
 static void app_sec_rcv_keypress_nofify_cb(uint8_t conn_idx, sec_keypress_notify_t notify_type)
 {
-
 }
