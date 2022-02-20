@@ -29,6 +29,8 @@
 
 #define FS_TASK_STACK_SIZE   4096
 #define FS_TASK_PRIO         25
+#define MS_1000              1000
+#define PRINTF_ERR           (-1)
 
 #define LOG_E(fmt, ...) HILOG_ERROR(HILOG_MODULE_APP, fmt, ##__VA_ARGS__)
 #define LOG_I(fmt, ...) HILOG_INFO(HILOG_MODULE_APP, fmt, ##__VA_ARGS__)
@@ -37,6 +39,11 @@ static void dir_test(const char *path)
 {
     DIR *dir;
     struct dirent *dp;
+    int ret;
+    struct stat st_buf = {0};
+    char realpath[128];
+
+    ret = 0;
     if ((dir = opendir(path)) == NULL) {
         LOG_E("opendir %s failed, %s\n", path, strerror(errno));
         return;
@@ -45,9 +52,13 @@ static void dir_test(const char *path)
         if (strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0) {
             continue;
         }
-        struct stat st_buf = {0};
-        char realpath[128];
-        snprintf(realpath, sizeof(realpath), "%s/%s", path, dp->d_name);
+
+        ret = snprintf_s(realpath, sizeof(realpath), sizeof(realpath), "%s/%s", path, dp->d_name);
+        if (ret == PRINTF_ERR) {
+            printf("snprintf_s faiked, err = %d", ret);
+            return; // 返回失败
+        }
+
         if (stat(realpath, &st_buf) != 0) {
             LOG_E("can not access %s\n", realpath);
             closedir(dir);
@@ -66,6 +77,7 @@ static void read_file(const char *file, bool print_str)
 {
     int bytes = 0;
     char buf[513];
+    int ret = 0;
 
     int fd = open(file, O_RDONLY);
     if (fd < 0) {
@@ -74,18 +86,23 @@ static void read_file(const char *file, bool print_str)
     }
 
     while (1) {
-        memset(buf, 0, sizeof(buf));
+        ret = memset_s(buf, sizeof(buf), 0, sizeof(buf));
+        if (ret < 0) {
+            return;
+        }
         int rc = read(fd, buf, sizeof(buf) - 1);
-        if (rc > 0)
+        if (rc > 0) {
             bytes += rc;
+        }
 
         if (print_str) {
             buf[rc] = '\0';
             LOG_I("%s", buf);
         }
 
-        if (rc < sizeof(buf) - 1)
+        if (rc < sizeof(buf) - 1) {
             break;
+        }
     }
     close(fd);
     LOG_I("read file '%s' total bytes: %d\r\n", file, bytes);
@@ -119,7 +136,7 @@ static void *FsTestTask(const char *arg)
 
     while (1) {
         fs_test();
-        osDelay(1000);
+        osDelay(MS_1000);
     }
 }
 

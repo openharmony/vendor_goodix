@@ -41,8 +41,7 @@ static const char OHOS_SERIAL[] = {"1234567890"};  // provided by OEM.
 static const int OHOS_FIRST_API_VERSION = 1;
 
 static const char EMPTY_STR[] = {""};
-static char serialNumber[2 * SERIAL_LEN + 1];
-
+static char serialNumber[(SERIAL_LEN >> 1) + 1];
 
 const char* HalGetDeviceType(void)
 {
@@ -106,11 +105,11 @@ const char* HalGetSerial(void)
     uint8_t Uid[UID_LEN];
     
     if (sys_device_uid_get(Uid) == 0) {
-        UidTmp[0] = Uid[3]; 
-        UidTmp[1] = Uid[4]; 
-        UidTmp[2] = Uid[5]; 
-        UidTmp[3] = Uid[6];   
-        UidTmp[4] = Uid[10];  
+        UidTmp[0] = Uid[3];
+        UidTmp[1] = Uid[4];
+        UidTmp[2] = Uid[5];
+        UidTmp[3] = Uid[6];
+        UidTmp[4] = Uid[10];
         UidTmp[5] = Uid[13];
         UidTmp[6] = Uid[14];
         UidTmp[7] = Uid[15];

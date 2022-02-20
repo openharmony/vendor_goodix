@@ -29,8 +29,7 @@ static void app_gatt_mtu_exchange_cb(uint8_t conn_idx, uint8_t status, uint16_t 
  * GLOBAL VARIABLE DEFINITIONS
  *****************************************************************************************
  */
-const gatt_common_cb_fun_t app_gatt_common_callback =
-{
+const gatt_common_cb_fun_t app_gatt_common_callback = {
     .app_gatt_mtu_exchange_cb = app_gatt_mtu_exchange_cb,
 };
 
@@ -49,5 +48,4 @@ const gatt_common_cb_fun_t app_gatt_common_callback =
  */
 static void app_gatt_mtu_exchange_cb(uint8_t conn_idx, uint8_t status, uint16_t mtu)
 {
-
 }

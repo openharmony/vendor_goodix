@@ -17,6 +17,14 @@
 #include "uart_if.h"
 
 static DevHandle uart_handle = NULL;
+#define baudrate_115200 115200
+enum case_test_index {
+    SET_BAUD,
+    GET_BAUD,
+    UART_CONFIG,
+    UART_WRITE,
+    UART_READ
+};
 
 static void uart_test_case(DevHandle uart_handle)
 {
@@ -28,15 +36,15 @@ static void uart_test_case(DevHandle uart_handle)
     uint8_t recv_data[16];
 
     switch (state) {
-        case 0:
-            ret = UartSetBaud(uart_handle, 115200);
+        case SET_BAUD:
+            ret = UartSetBaud(uart_handle, baudrate_115200);
             if (ret != 0) {
                 LOG_E("%s, state[%d] failed", __func__, state);
                 return;
             }
             state++;
             break;
-        case 1:
+        case GET_BAUD:
             ret = UartGetBaud(uart_handle, &baudrate);
             if (ret != 0) {
                 LOG_E("%s, state[%d] failed", __func__, state);
@@ -45,7 +53,7 @@ static void uart_test_case(DevHandle uart_handle)
             state++;
             LOG_I("get baudrate = %d", baudrate);
             break;
-        case 2:
+        case UART_CONFIG:
             attr.dataBits = UART_ATTR_DATABIT_8;
             attr.parity = UART_ATTR_PARITY_NONE;
             attr.stopBits = UART_ATTR_STOPBIT_1;
@@ -56,15 +64,14 @@ static void uart_test_case(DevHandle uart_handle)
             }
             state++;
             break;
-        case 3:
+        case UART_WRITE:
             ret = UartWrite(uart_handle, send_data, strlen(send_data));
             if (ret != 0) {
                 LOG_E("%s, state[%d] failed", __func__, state);
                 return;
             }
-            //state = 4;
             break;
-        case 4:
+        case UART_READ:
             ret = UartRead(uart_handle, recv_data, sizeof(recv_data) - 1);
             if (ret > 0) {
                 recv_data[ret] = 0;
@@ -72,20 +79,22 @@ static void uart_test_case(DevHandle uart_handle)
             } else {
                 LOG_I("%s, state[%d] no data received", __func__, state);
             }
-            state = 3;
+            state = UART_WRITE;
+            break;
+        default:
+            LOG_I("%s, state[%d] is not support", __func__, state);
             break;
     }
 }
 
-void uart_test()
+void uart_test(void)
 {
     static int uart_state = 0;
 
     switch (uart_state) {
-        default:
         case 0:
             uart_handle = UartOpen(1);
-            if (NULL == uart_handle) {
+            if (uart_handle == NULL) {
                 LOG_E (">>>uart open failed");
             } else {
                 LOG_I (">>>uart open success");
@@ -96,6 +105,8 @@ void uart_test()
             if (uart_handle) {
                 uart_test_case(uart_handle);
             }
+            break;
+        default:
             break;
     }
 }

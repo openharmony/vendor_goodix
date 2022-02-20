@@ -17,23 +17,24 @@
 #include "cmsis_os2.h"
 #include "ohos_init.h"
 
-static void driver_test_task(void *arg)
-{
-    (void)arg;
+#define  STACK_SIZE 4096
+#define  MS_1000    1000
 
+static void driver_test_task(void)
+{
     LOG_I(">>>xts driver test task start.");
 
     while (1) {
         gpio_test();
         uart_test();
-        osDelay(1000);
+        osDelay(MS_1000);
     }
 }
 
 static void driver_test(void)
 {
     osThreadAttr_t attr = {0};
-    attr.stack_size = 4096;
+    attr.stack_size = STACK_SIZE;
     attr.priority = osPriorityNormal;
     attr.name = "driver_test";
     if (osThreadNew((osThreadFunc_t)driver_test_task, NULL, &attr) == NULL) {

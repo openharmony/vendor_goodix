@@ -20,6 +20,7 @@
 
 #define SHELL_TEST_TASK_STACK_SIZE   512
 #define SHELL_TEST_TASK_PRIO         25
+#define MS_1000                     1000
 
 UINT32 CmdGetDeviceInfo(UINT32 argc, const CHAR **argv)
 {
@@ -34,7 +35,7 @@ static void *ShellTestTask(const char *arg)
     osCmdReg(CMD_TYPE_EX, "devinfo", 0, CmdGetDeviceInfo);
 
     while (1) {
-        osDelay(1000);
+        osDelay(MS_1000);
     }
 }
 
