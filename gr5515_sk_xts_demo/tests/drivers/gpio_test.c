@@ -67,7 +67,7 @@ static void gpio_input_test(void)
     }
 }
 
-static int32_t gpio_irq_handler(uint16_t gpio, void *data)
+static int32_t gpio_irq_handler(uint16_t gpio,  uint8_t *data)
 {
     LOG_I("%s enter, gpio = %d, data = %d\r\n", __func__, gpio, *(int *)data);
     return 0;
