@@ -19,15 +19,11 @@
 #include "scatter_common.h"
 #include "flash_scatter_config.h"
 #include "user_app.h"
+#include "app_callback.h"
 
 #define BLE_TASK_STACK_SIZE   4096
 #define BLE_TASK_PRIO         25
 #define MS_1000     1000
-
-extern gap_cb_fun_t         app_gap_callbacks;
-extern gatt_common_cb_fun_t app_gatt_common_callback;
-extern gattc_cb_fun_t       app_gattc_callback;
-extern sec_cb_fun_t         app_sec_callback;
 
 /**@brief Stack global variables for Bluetooth protocol stack. */
 STACK_HEAP_INIT(heaps_table);

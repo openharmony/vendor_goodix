@@ -26,48 +26,19 @@ enum case_test_index {
     UART_READ
 };
 
-static void uart_test_case(DevHandle uart_handle)
+
+int uart_test_case_read_write(int uart_state)
 {
-    static int state = 0;
+    int state_temp = uart_state;
     int32_t ret;
-    uint32_t baudrate;
-    struct UartAttribute attr;
     uint8_t send_data[] = "Hello OpenHarmony\r\n";
     uint8_t recv_data[16];
 
-    switch (state) {
-        case SET_BAUD:
-            ret = UartSetBaud(uart_handle, baudrate_115200);
-            if (ret != 0) {
-                LOG_E("%s, state[%d] failed", __func__, state);
-                return;
-            }
-            state++;
-            break;
-        case GET_BAUD:
-            ret = UartGetBaud(uart_handle, &baudrate);
-            if (ret != 0) {
-                LOG_E("%s, state[%d] failed", __func__, state);
-                return;
-            }
-            state++;
-            LOG_I("get baudrate = %d", baudrate);
-            break;
-        case UART_CONFIG:
-            attr.dataBits = UART_ATTR_DATABIT_8;
-            attr.parity = UART_ATTR_PARITY_NONE;
-            attr.stopBits = UART_ATTR_STOPBIT_1;
-            ret = UartSetAttribute(uart_handle, &attr);
-            if (ret != 0) {
-                LOG_E("%s, state[%d] failed", __func__, state);
-                return;
-            }
-            state++;
-            break;
+    switch (state_temp) {
         case UART_WRITE:
             ret = UartWrite(uart_handle, send_data, strlen(send_data));
             if (ret != 0) {
-                LOG_E("%s, state[%d] failed", __func__, state);
+                LOG_E("%s, state[%d] failed", __func__, state_temp);
                 return;
             }
             break;
@@ -75,16 +46,59 @@ static void uart_test_case(DevHandle uart_handle)
             ret = UartRead(uart_handle, recv_data, sizeof(recv_data) - 1);
             if (ret > 0) {
                 recv_data[ret] = 0;
-                LOG_I("%s, state[%d] recv:%s", __func__, state, recv_data);
+                LOG_I("%s, state[%d] recv:%s", __func__, state_temp, recv_data);
             } else {
-                LOG_I("%s, state[%d] no data received", __func__, state);
+                LOG_I("%s, state[%d] no data received", __func__, state_temp);
             }
-            state = UART_WRITE;
+            state_temp = UART_WRITE;
             break;
         default:
-            LOG_I("%s, state[%d] is not support", __func__, state);
+            LOG_I("%s, state[%d] is not support", __func__, state_temp);
             break;
     }
+
+    return state_temp;
+}
+
+static void uart_test_case(DevHandle uart_handle)
+{
+    static int state = 0;
+    int32_t ret;
+    uint32_t baudrate;
+    struct UartAttribute attr;
+    uint8_t recv_data[16];
+
+    ret = UartSetBaud(uart_handle, baudrate_115200);
+    if (ret != 0) {
+        LOG_E("%s, state[%d] failed", __func__, state);
+        return;
+    }
+
+    ret = UartGetBaud(uart_handle, &baudrate);
+    if (ret != 0) {
+        LOG_E("%s, state[%d] failed", __func__, state);
+        return;
+    }
+
+    attr.dataBits = UART_ATTR_DATABIT_8;
+    attr.parity = UART_ATTR_PARITY_NONE;
+    attr.stopBits = UART_ATTR_STOPBIT_1;
+    ret = UartSetAttribute(uart_handle, &attr);
+    if (ret != 0) {
+        LOG_E("%s, state[%d] failed", __func__, state);
+        return;
+    }
+
+    ret = UartRead(uart_handle, recv_data, sizeof(recv_data) - 1);
+    if (ret > 0) {
+        recv_data[ret] = 0;
+        LOG_I("%s, state[%d] recv:%s", __func__, state, recv_data);
+    } else {
+        LOG_I("%s, state[%d] no data received", __func__, state);
+    }
+
+    state = UART_WRITE;
+    state = uart_test_case_read_write(state);
 }
 
 void uart_test(void)
