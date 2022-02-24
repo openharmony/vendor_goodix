@@ -24,22 +24,6 @@
 #define UID_SHIFT           4
 #define UID_HIGH_MASK       0xf0
 #define UID_LOW_MASK        0x0f
-#define ZERO      0
-#define ONE       1
-#define TWO       2
-#define THREE     3
-#define FOUR      4
-#define FIVE      5
-#define SIX       6
-#define SEVEN     7
-#define EIGHT     8
-#define NINE      9
-#define TEN       10
-#define ELEVEN    11
-#define TWELVE    12
-#define THIRTEEN  13
-#define FOURTEEN  14
-#define FIFTEEN   15
 
 static const char OHOS_DEVICE_TYPE[] = {"****"};
 static const char OHOS_DISPLAY_VERSION[] = {"OpenHarmony 1.0.1"};
@@ -121,14 +105,14 @@ const char* HalGetSerial(void)
     uint8_t Uid[UID_LEN];
     
     if (sys_device_uid_get(Uid) == 0) {
-        UidTmp[ZERO] = Uid[THREE];
-        UidTmp[ONE] = Uid[FOUR];
-        UidTmp[TWO] = Uid[FIVE];
-        UidTmp[THREE] = Uid[SIX];
-        UidTmp[FOUR] = Uid[TEN];
-        UidTmp[FIVE] = Uid[THIRTEEN];
-        UidTmp[SIX] = Uid[FOURTEEN];
-        UidTmp[SEVEN] = Uid[FIFTEEN];
+        UidTmp[0] = Uid[3];
+        UidTmp[1] = Uid[4];
+        UidTmp[2] = Uid[5];
+        UidTmp[3] = Uid[6];
+        UidTmp[4] = Uid[10];
+        UidTmp[5] = Uid[13];
+        UidTmp[6] = Uid[14];
+        UidTmp[7] = Uid[15];
     }
 
     for (i = 0; i < SERIAL_LEN; i++) {
