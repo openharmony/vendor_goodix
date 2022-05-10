@@ -45,4 +45,5 @@ action("image") {
 }
 
 group("gr5515_sk_iotlink_demo") {
+  deps = [ "hals/utils/sys_param:vendor.para" ]
 }
