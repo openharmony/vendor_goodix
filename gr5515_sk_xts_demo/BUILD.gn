@@ -63,5 +63,4 @@ action("image") {
 }
 
 group("gr5515_sk_xts_demo") {
-  deps = [ "hals/utils/sys_param:vendor.para" ]
 }
