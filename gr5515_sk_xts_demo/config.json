@@ -41,7 +41,12 @@
       {
         "subsystem": "utils",
         "components": [
-          { "component": "file", "features":[] },
+          { "component": "file", "features":[] }
+        ]
+      },    
+      {
+        "subsystem": "distributeddatamgr",
+        "components": [
           { "component": "kv_store", "features":[] }
         ]
       },
