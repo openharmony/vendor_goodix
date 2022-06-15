@@ -28,6 +28,7 @@ executable("${fw_img_name}.elf") {
 
   ldflags = [
     "-Wl,--whole-archive",
+
     # "-lfs_test",
     # "-ldrivers_test",
     # "-lapp_hello",
