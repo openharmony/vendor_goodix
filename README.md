@@ -12,7 +12,7 @@
 
 ```
 device/                               --- 硬件单板相关仓库
-├── boards/goodix                     --- Goodix相关单板
+├── board/goodix                      --- Goodix相关单板
 ├── soc/goodix                        --- Goodix相关SoC代码
 vendor/goodix/                        --- vendor_goodix 仓库路径
 ├── gr5515_sk_iotlink_demo            --- BLE应用样例
@@ -70,12 +70,28 @@ group("gr5515_sk_led_demo") {
 }
 
 ```
+5. 编辑"gr5515_sk_led_demo/ohos.build"，修改需要编译的固件：
+
+```
+{
+  "parts": {
+    "product_gr5515_sk_led_demo": {
+      "module_list": [
+        "//vendor/goodix/gr5515_sk_led_demo:gr5515_sk_led_demo",
+        "//vendor/goodix/gr5515_sk_led_demo:image"
+      ]
+    }
+  },
+  "subsystem": "product_gr5515_sk_led_demo"
+}
+
+```
 
 ### 实现业务
 
 1. 在gr5515_sk_led_demo目录下新建一个led文件夹，用于存放应用源码，并在led目录下新建led.c、BUILD.gn。
 
-2. 编辑led.c，调用Harmony OS标准API创建任务，调用HDF驱动接口驱动LED灯，示例如下代码段所示：
+2. 编辑led.c，调用OpenHarmony OS标准API创建任务，调用HDF驱动接口驱动LED灯，示例如下代码段所示：
 
 ```
 #include "ohos_init.h"
