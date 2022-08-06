@@ -32,7 +32,7 @@ vendor/goodix/                        --- vendor_goodix 仓库路径
 "product_name": "gr5515_sk_led_demo"
 "product_adapter_dir": "//vendor/goodix/gr5515_sk_led_demo/hals"
 ```
-3. 此工程业务逻辑简单，一些用不到的组件可以去掉，减少源码编译时间，在config.json中可删除xts、security子系统，保留kernel、startup、hiviewdfx、distributedschedule等必要的子系统，可移除如下代码段：
+3. 此工程业务逻辑简单，一些用不到的组件可以去掉，减少源码编译时间，在config.json中可删除xts、security子系统，保留kernel、startup、hiviewdfx、systemabilitymgr等必要的子系统，可移除如下代码段：
 
 ```
 {
