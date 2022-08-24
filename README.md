@@ -168,7 +168,7 @@ goodix
 
 继续执行 `hb build -f`, 开始构建工程，待工程构建完毕，生成的固件存放在"**/out/gr5515_sk/gr5515_sk_led_demo/bin/app_led/app_led_fw.bin**", 可使用GProgrammer软件烧录到Flash。
 
-更详细的编译和烧录过程，请参考 [编译烧录教程](https://gitee.com/openharmony-sig/device_soc_goodix/blob/master/README.md)
+更详细的编译和烧录过程，请参考 [编译烧录教程](https://gitee.com/openharmony/device_soc_goodix/blob/master/README.md)
 
 如果用户使用的是GR5515 Starter Kit开发板，固件烧录成功后，程序启动将观察到开发板上LED0间隔1S闪烁。
 
