@@ -153,7 +153,7 @@ void FsTaskEntry(void)
     attr.priority = FS_TASK_PRIO;
 
     if (osThreadNew((osThreadFunc_t)FsTestTask, NULL, &attr) == NULL) {
-        printf("Falied to create FsTestTask!\n");
+        printf("Failed to create FsTestTask!\n");
     }
 }
 
