@@ -113,7 +113,7 @@ void LedTaskEntry(void)
     attr.priority = LED_TASK_PRIO;
 
     if (osThreadNew((osThreadFunc_t)LedTask, NULL, &attr) == NULL) {
-        printf("Falied to create LedTask!\n");
+        printf("Failed to create LedTask!\n");
     }
 }
 

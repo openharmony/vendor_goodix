@@ -52,7 +52,7 @@ void ShellTestTaskEntry(void)
     attr.priority = SHELL_TEST_TASK_PRIO;
 
     if (osThreadNew((osThreadFunc_t)ShellTestTask, NULL, &attr) == NULL) {
-        printf("[HelloDemo] Falied to create ShellTestTask!\n");
+        printf("[HelloDemo] Failed to create ShellTestTask!\n");
     }
 }
 

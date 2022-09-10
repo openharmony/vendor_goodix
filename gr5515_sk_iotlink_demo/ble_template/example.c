@@ -63,7 +63,7 @@ void BLE_TaskEntry(void)
     attr.priority   = BLE_TASK_PRIO;
 
     if (osThreadNew((osThreadFunc_t)BLE_Task, NULL, &attr) == NULL) {
-        printf("[HelloDemo] Falied to create HelloTask!\n");
+        printf("[HelloDemo] Failed to create HelloTask!\n");
     }
 }
 
