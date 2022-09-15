@@ -45,7 +45,7 @@ void HelloTaskEntry(void)
     attr.priority = HELLO_TASK_PRIO;
 
     if (osThreadNew((osThreadFunc_t)HelloTask, NULL, &attr) == NULL) {
-        printf("[HelloDemo] Falied to create HelloTask!\n");
+        printf("[HelloDemo] Failed to create HelloTask!\n");
     }
 }
 
