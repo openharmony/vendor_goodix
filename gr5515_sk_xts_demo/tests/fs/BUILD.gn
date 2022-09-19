@@ -17,8 +17,8 @@ static_library("fs_test") {
   sources = [ "fs_test.c" ]
 
   include_dirs = [
-    "//utils/native/lite/include",
-    "//utils/native/lite/memory/include",
+    "//commonlibrary/utils_lite/include",
+    "//commonlibrary/utils_lite/memory/include",
   ]
 
   deps = [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static" ]
