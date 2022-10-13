@@ -1,10 +1,14 @@
 # vendor_goodix
 
-## 介绍
+[TOC]
+
+## 简介
 
 该仓库托管Goodix开发的基于GR551x BLE产品样例代码。
 
-## 产品样例
+## 编译构建
+
+### 产品样例
 
 支持基于Goodix GR5515 SoC的Starter Kit单板进行开发的BLE应用、XTS测试样例。
 
@@ -19,11 +23,11 @@ vendor/goodix/                        --- vendor_goodix 仓库路径
 └── gr5515_sk_xts_demo                --- XTS测试样例
 ```
 
-## 新建样例
+### 新建样例
 
 用户可以将提供的XTS样例复制一份，然后进行裁剪或者修改，实现自己的产品工程，下面举例说明如何新建一个工程，并实现"点灯"。
 
-### 新建工程
+#### 新建工程
 
 1. 复制一份"gr5515_sk_xts_demo"放在同级目录下，并改名为"gr5515_sk_led_demo"；
 2. 进入gr5515_sk_led_demo目录, 编辑config.json文件，修改product_name和product_adapter_dir：
@@ -71,7 +75,7 @@ group("gr5515_sk_led_demo") {
 
 ```
 
-### 实现业务
+#### 实现业务
 
 1. 在gr5515_sk_led_demo目录下新建一个led文件夹，用于存放应用源码，并在led目录下新建led.c、BUILD.gn。
 
@@ -169,6 +173,8 @@ goodix
 继续执行 `hb build -f`, 开始构建工程，待工程构建完毕，生成的固件存放在"**/out/gr5515_sk/gr5515_sk_led_demo/bin/app_led/app_led_fw.bin**", 可使用GProgrammer软件烧录到Flash。
 
 更详细的编译和烧录过程，请参考 [编译烧录教程](https://gitee.com/openharmony/device_soc_goodix/blob/master/README.md)
+
+## 使用方法
 
 如果用户使用的是GR5515 Starter Kit开发板，固件烧录成功后，程序启动将观察到开发板上LED0间隔1S闪烁。
 
