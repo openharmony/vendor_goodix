@@ -39,7 +39,7 @@ executable("${fw_img_name}.elf") {
     "-lmodule_ActsUtilsFileTest",
 
     #    "-lmodule_ActsKvStoreTest",
-    "-lmodule_ActsParameterTest",
+    #    "-lmodule_ActsParameterTest",
     "-lmodule_ActsSamgrTest",
     "-lhuks_test_common",
     "-lmodule_ActsHuksHalFunctionTest",
