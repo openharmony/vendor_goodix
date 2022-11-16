@@ -53,8 +53,8 @@ executable("${fw_img_name}.elf") {
 action("image") {
   script = "//device/soc/$device_company/gr551x/tools/bin_create.py"
   outputs = [
-    "$root_build_dir/bin/${fw_img_name}.bin",
-    "$root_build_dir/bin/${fw_img_name}.lst",
+    "$root_build_dir/${fw_img_name}.bin",
+    "$root_build_dir/${fw_img_name}.lst",
   ]
   args = [
     rebase_path("$root_build_dir/unstripped/bin/${fw_img_name}.elf"),
