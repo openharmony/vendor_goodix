@@ -128,17 +128,19 @@ SYS_RUN(LedTaskEntry);
 3. 编辑"led/BUILD.gn"将led.c业务代码加入编译，参考示例如下：
 
 ```
-import("//device/board/goodix/${board_name}/liteos_m/config.gni")
+import("//build/lite/config/component/lite_component.gni")
 
 static_library("led_demo") {
-   configs = []
-
    sources = [
       "led.c",
    ]
 
-   cflags = board_cflags
-   include_dirs = board_include_dirs
+   include_dirs = [
+    "//drivers/hdf_core/framework/include/platform",
+    "//drivers/hdf_core/framework/include/utils",
+    "//drivers/hdf_core/adapter/khdf/liteos_m/osal/include/",
+    "//drivers/hdf_core/framework/include/osal",
+  ]
 }
 ```
 led.c编译后，会在libs目录下生成"libled_demo.a"静态库。
@@ -170,7 +172,7 @@ goodix
  ❯ gr5515_sk_led_demo
 ```
 
-继续执行 `hb build -f`, 开始构建工程，待工程构建完毕，生成的固件存放在"**/out/gr5515_sk/gr5515_sk_led_demo/bin/app_led/app_led_fw.bin**", 可使用GProgrammer软件烧录到Flash。
+继续执行 `hb build -f`, 开始构建工程，待工程构建完毕，生成的固件存放在"**/out/gr5515_sk/gr5515_sk_led_demo/OHOS_Image.bin**", 可使用GProgrammer软件烧录到Flash。
 
 更详细的编译和烧录过程，请参考 [编译烧录教程](https://gitee.com/openharmony/device_soc_goodix/blob/master/README.md)
 
