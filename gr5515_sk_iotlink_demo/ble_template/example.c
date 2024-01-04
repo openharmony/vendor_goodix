@@ -16,6 +16,7 @@
 #include "ohos_init.h"
 #include "cmsis_os2.h"
 #include "gr55xx_sys.h"
+#include "gr55xx_hal_pwr.h"
 #include "scatter_common.h"
 #include "flash_scatter_config.h"
 #include "user_app.h"
@@ -65,6 +66,8 @@ void BLE_TaskEntry(void)
     if (osThreadNew((osThreadFunc_t)BLE_Task, NULL, &attr) == NULL) {
         printf("[HelloDemo] Failed to create HelloTask!\n");
     }
+
+    pwr_mgmt_mode_set(PMR_MGMT_SLEEP_MODE);
 }
 
 SYS_RUN(BLE_TaskEntry);

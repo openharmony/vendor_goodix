@@ -24,5 +24,12 @@ static_library("ble_example") {
     "user_callback/user_sm_callback.c",
   ]
 
-  include_dirs = [ "user_app" ]
+  include_dirs = [
+    "user_app",
+    "//drivers/hdf_core/framework/include/platform",
+    "//drivers/hdf_core/framework/include/utils",
+    "//drivers/hdf_core/adapter/khdf/liteos_m/osal/include/",
+    "//drivers/hdf_core/framework/include/osal",
+    "//drivers/hdf_core/interfaces/inner_api/utils",
+  ]
 }
