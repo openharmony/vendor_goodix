@@ -3,6 +3,7 @@
     "ohos_version": "OpenHarmony 1.0",
     "device_company": "goodix",
     "board": "gr5515_sk",
+    "type": "mini",
     "kernel_type": "liteos_m",
     "kernel_version": "3.0.0",
     "subsystems": [
@@ -74,6 +75,12 @@
               "huks_config_file = \"hks_config_lite.h\""
             ]
           }
+        ]
+      },
+      {
+        "subsystem": "developtools",
+        "components": [
+          { "component": "syscap_codec", "features":[] }
         ]
       }
     ],
