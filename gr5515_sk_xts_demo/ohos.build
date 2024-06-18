@@ -2,8 +2,7 @@
   "parts": {
     "product_gr5515_sk_xts_demo": {
       "module_list": [
-        "//vendor/goodix/gr5515_sk_xts_demo:gr5515_sk_xts_demo",
-        "//vendor/goodix/gr5515_sk_xts_demo:image"
+        "//vendor/goodix/gr5515_sk_xts_demo:gr5515_sk_xts_demo"
       ]
     }
   },
