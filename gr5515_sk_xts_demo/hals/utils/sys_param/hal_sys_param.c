@@ -41,7 +41,7 @@
 #define FOURTEEN  14
 #define FIFTEEN   15
 
-static char serialNumber[(SERIAL_LEN >> 1) + 1];
+static char serialNumber[(SERIAL_LEN << 1) + 1];
 
 static char Hex2Char(uint8_t hex)
 {

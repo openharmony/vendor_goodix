@@ -17,19 +17,9 @@ static_library("ble_example") {
   sources = [
     "example.c",
     "user_app/user_app.c",
-    "user_callback/user_gap_callback.c",
-    "user_callback/user_gatt_common_callback.c",
-    "user_callback/user_gattc_callback.c",
-    "user_callback/user_l2cap_callback.c",
-    "user_callback/user_sm_callback.c",
   ]
 
   include_dirs = [
     "user_app",
-    "//drivers/hdf_core/framework/include/platform",
-    "//drivers/hdf_core/framework/include/utils",
-    "//drivers/hdf_core/adapter/khdf/liteos_m/osal/include/",
-    "//drivers/hdf_core/framework/include/osal",
-    "//drivers/hdf_core/interfaces/inner_api/utils",
   ]
 }

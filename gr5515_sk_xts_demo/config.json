@@ -72,7 +72,9 @@
               "disable_authenticate = false",
               "huks_use_lite_storage = false",
               "huks_use_hardware_root_key = false",
-              "huks_config_file = \"hks_config_lite.h\""
+              "huks_config_file = \"hks_config_lite.h\"",
+              "huks_dependency_mbedtls_path = \"//third_party/mbedtls\"",
+              "ohos_security_huks_mbedtls_porting_path = \"//device/soc/goodix/gr551x/sdk_liteos/third_party_adapter/mbedtls\""
             ]
           }
         ]

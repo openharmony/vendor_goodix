@@ -1,4 +1,4 @@
-# Copyright (c) 2021 GOODIX.
+# Copyright (c) 2024 GOODIX.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -11,59 +11,117 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("//build/lite/config/component/lite_component.gni")
-import("//build/lite/config/subsystem/lite_subsystem.gni")
-
 # Set firmware name
-fw_img_name = "application"
+fw_img_name = "gr5515_sk_xts_demo"
 
-executable("${fw_img_name}.elf") {
-  deps = [
-    "tests:drivers",
-    "tests:fs_test",
-    "tests:ohosdemo",
-    "tests:shell_test",
-    "//build/lite:ohos",
-  ]
+use_legacy = false
 
-  ldflags = [
-    "-Wl,--whole-archive",
+if (use_legacy) {
 
-    # "-lfs_test",
-    # "-ldrivers_test",
-    # "-lapp_hello",
-    "-lshell_test",
-    "-lhctest",
-    "-lmodule_ActsBootstrapTest",
-    "-lmodule_ActsWifiIotTest",
+  executable("${fw_img_name}.elf") {
+    deps = [
+      "tests:drivers",
+      "tests:fs_test",
+      "tests:ohosdemo",
+      "tests:shell_test",
+      "//build/lite:ohos",
+    ]
 
-    # "-lmodule_ActsUtilsFileTest",
+    ldflags = [
+      "-Wl,--whole-archive",
 
-    #    "-lmodule_ActsKvStoreTest",
-    #    "-lmodule_ActsParameterTest",
-    "-lmodule_ActsSamgrTest",
-    "-lhuks_test_common",
-    "-lmodule_ActsHuksHalFunctionTest",
-    "-lmodule_ActsDfxFuncTest",
-    "-lmodule_ActsUpdaterFuncTest",
-    "-lmodule_ActsHieventLiteTest",
-    "-Wl,--no-whole-archive",
-  ]
-}
+      # "-lfs_test",
+      # "-ldrivers_test",
+      # "-lapp_hello",
+      "-lshell_test",
+      "-lhctest",
+      "-lmodule_ActsBootstrapTest",
+      "-lmodule_ActsWifiIotTest",
 
-action("image") {
-  script = "//device/soc/$device_company/gr551x/tools/bin_create.py"
-  outputs = [
-    "$root_build_dir/${fw_img_name}.bin",
-    "$root_build_dir/${fw_img_name}.lst",
-  ]
-  args = [
-    rebase_path("$root_build_dir/unstripped/bin/${fw_img_name}.elf"),
-    rebase_path(outputs[0]),
-    rebase_path(outputs[1]),
-  ]
-  deps = [ ":${fw_img_name}.elf" ]
-}
+      # "-lmodule_ActsUtilsFileTest",
 
-group("gr5515_sk_xts_demo") {
+      #    "-lmodule_ActsKvStoreTest",
+      #    "-lmodule_ActsParameterTest",
+      "-lmodule_ActsSamgrTest",
+      "-lhuks_test_common",
+      "-lmodule_ActsHuksHalFunctionTest",
+      "-lmodule_ActsDfxFuncTest",
+      "-lmodule_ActsUpdaterFuncTest",
+      "-lmodule_ActsHieventLiteTest",
+      "-Wl,--no-whole-archive",
+    ]
+  }
+
+  action("binary") {
+    script = "//build/lite/run_shell_cmd.py"
+    args = [
+      "${compile_prefix}objcopy$toolchain_cmd_suffix",
+      "-O",
+      "binary",
+      rebase_path("$root_build_dir/bin/$fw_img_name.elf"),
+      rebase_path("$root_build_dir/bin/$fw_img_name.bin"),
+    ]
+    outputs = [ "$root_build_dir/bin/$fw_img_name.bin" ]
+    deps = [ ":${fw_img_name}.elf" ]
+  }
+
+  action("hex") {
+    script = "//build/lite/run_shell_cmd.py"
+    args = [
+      "${compile_prefix}objcopy$toolchain_cmd_suffix",
+      "-O",
+      "ihex",
+      rebase_path("$root_build_dir/bin/$fw_img_name.elf"),
+      rebase_path("$root_build_dir/bin/$fw_img_name.hex"),
+    ]
+    outputs = [ "$root_build_dir/bin/$fw_img_name.hex" ]
+    deps = [ ":${fw_img_name}.elf" ]
+  }
+
+  action("disassembly") {
+    script = "//build/lite/run_shell_cmd.py"
+    args = [
+      "${compile_prefix}objdump$toolchain_cmd_suffix",
+      "-D",
+      rebase_path("$root_build_dir/unstripped/bin/$fw_img_name.elf"),
+      ">",
+      rebase_path("$root_build_dir/bin/$fw_img_name.asm"),
+    ]
+    outputs = [ "$root_build_dir/bin/$fw_img_name.asm" ]
+    deps = [ ":${fw_img_name}.elf" ]
+  }
+
+  group("gr5515_sk_xts_demo") {
+    deps = [
+      ":binary",
+      ":hex",
+      # ":disassembly",
+    ]
+  }
+} else {
+  import("//device/soc/goodix/gr551x/gr551x_executable.gni")
+
+  gr551x_executable(fw_img_name) {
+    gen_asm = false
+    deps = [
+      "tests:drivers",
+      "tests:fs_test",
+      "tests:ohosdemo",
+      "tests:shell_test",
+      "//build/lite:ohos",
+    ]
+
+    force_link_libs = [
+      "shell_test",
+      "hctest",
+      "module_ActsBootstrapTest",
+      "module_ActsWifiIotTest",
+      "module_ActsSamgrTest",
+      "huks_test_common",
+      "module_ActsHuksHalFunctionTest",
+      "module_ActsDfxFuncTest",
+      "module_ActsUpdaterFuncTest",
+      "module_ActsHieventLiteTest",
+    ]
+  }
 }
