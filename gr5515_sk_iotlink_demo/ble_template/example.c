@@ -16,7 +16,7 @@
 #include "ohos_init.h"
 #include "cmsis_os2.h"
 #include "gr_includes.h"
-#include "user_app_xx.h"
+#include "user_app.h"
 #include "los_task.h"
 #include "app_io.h"
 
