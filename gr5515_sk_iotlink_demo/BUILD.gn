@@ -73,6 +73,7 @@ if (use_legacy) {
     deps = [
       ":binary",
       ":hex",
+
       # ":disassembly",
     ]
   }
@@ -86,8 +87,6 @@ if (use_legacy) {
       "//build/lite:ohos",
     ]
 
-    force_link_libs = [
-      "ble_example",
-    ]
+    force_link_libs = [ "ble_example" ]
   }
 }
