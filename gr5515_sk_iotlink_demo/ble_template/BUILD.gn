@@ -19,7 +19,5 @@ static_library("ble_example") {
     "user_app/user_app.c",
   ]
 
-  include_dirs = [
-    "user_app",
-  ]
+  include_dirs = [ "user_app" ]
 }

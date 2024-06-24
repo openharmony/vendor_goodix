@@ -17,7 +17,6 @@ fw_img_name = "gr5515_sk_xts_demo"
 use_legacy = false
 
 if (use_legacy) {
-
   executable("${fw_img_name}.elf") {
     deps = [
       "tests:drivers",
@@ -95,6 +94,7 @@ if (use_legacy) {
     deps = [
       ":binary",
       ":hex",
+
       # ":disassembly",
     ]
   }
