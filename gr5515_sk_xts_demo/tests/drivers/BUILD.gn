@@ -25,6 +25,7 @@ static_library("drivers_test") {
     "//drivers/hdf_core/framework/include/utils",
     "//drivers/hdf_core/adapter/khdf/liteos_m/osal/include/",
     "//drivers/hdf_core/framework/include/osal",
+    "//drivers/hdf_core/interfaces/inner_api/utils",
   ]
   deps = [ "//base/hiviewdfx/hilog_lite/frameworks/featured:hilog_static" ]
 }
