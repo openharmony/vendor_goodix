@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 GOODIX.
+ * Copyright (c) 2024 GOODIX.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,7 +16,7 @@
 #ifndef __USER_APP_H__
 #define __USER_APP_H__
 
-#include "gr55xx_sys.h"
+#include "gr_includes.h"
 
 /*
  * GLOBAL FUNCTION DECLARATION
@@ -24,24 +24,17 @@
  */
 /**
  *****************************************************************************************
+ * @brief Function for user ble event handler.
+ *****************************************************************************************
+ */
+void ble_evt_handler(const ble_evt_t *p_evt);
+
+/**
+ *****************************************************************************************
  * @brief This callback will be called when ble stack initialized completely
  *****************************************************************************************
  */
-void ble_init_cmp_callback(void);
-
-/**
- *****************************************************************************************
- * @brief Function for deal device connect.
- *****************************************************************************************
- */
-void app_connected_handler(uint8_t conn_idx, const gap_conn_cmp_t *p_param);
-
-/**
- *****************************************************************************************
- * @brief Function for deal disconnect.
- *****************************************************************************************
- */
-void app_disconnected_handler(uint8_t conn_idx, uint8_t reason);
+void ble_app_init(void);
 
 #endif
 
